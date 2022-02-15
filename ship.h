@@ -1,6 +1,3 @@
-//
-// Created by andre on 08.02.2022.
-
 #include <iostream>
 #include "emun.h"
 #include "cell_method.h"
