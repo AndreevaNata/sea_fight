@@ -1,6 +1,3 @@
-//
-// Created by andre on 08.02.2022.
-
 #include <iostream>
 #include "emun.h"
 #include "cell_method.h"
@@ -25,10 +22,10 @@ public:
     void Create_hand(GameBoard& gameBoard, int size, int x, int y, bool horizontal);
     ~Ship();
 
-    // функция вощвращает состояние корабля, выполнив проверку целостности всех палуб
+    // функция возвращает состояние корабля, выполнив проверку целостности всех палуб
     ShipState GetState();
 
-    // функция выстрела по корабрю, возвращает состояние корябля, после выстрела
+    // функция выстрела по кораблю, возвращает состояние корабля, после выстрела
     void Shoot(GameBoard& gameBoard, int x, int y);
 
     bool TryHit(int x, int y);
@@ -54,18 +51,18 @@ public:
 
     ~GameBoard() { }
 
-    // функция установки статуса клетки игровго поля
+    // функция установки статуса клетки игрового поля
     void SetState(int x, int y, CellState state)
     { _cells[y][x].SetState(state); }
 
-    // функция возвращает является ли клетка палубой
+    // функция возвращает, является ли клетка палубой
     bool IsDeck(int x, int y)
     { return _cells[y][x].GetState() == Deck || _cells[y][x].GetState() == HitDeck; }
 
     // функция печати игрового поля
     void Print();
 
-    // функция возвращает число кдеток игровой области
+    // функция возвращает число клеток игровой области
     int GetCount()
     { return _size * _size; }
 
@@ -73,10 +70,10 @@ public:
     int GetSize()
     { return _size; }
 
-    // функция - выстрел в игрове поле
+    // функция - выстрел в игровое поле
     void Shoot(int x, int y);
 
-    // функция провекри - уничтожены ли все корабли на поле
+    // функция проверки - уничтожены ли все корабли на поле
     bool AllShipsDestroyed();
 };
 
