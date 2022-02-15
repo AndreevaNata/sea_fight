@@ -8,7 +8,7 @@ using namespace std;
 // заранее объявим, чтобы можно было указывать в качестве аргумент функций класса Ship
 class GameBoard;
 
-
+// ВАУ НАТАША
 
 int main(int argc, char** argv)
 {
