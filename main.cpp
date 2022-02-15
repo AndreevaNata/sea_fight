@@ -11,7 +11,7 @@ class GameBoard;
 // ВАУ НАТАША? hghghgh
 
 int main(int argc, char** argv)
-{
+{   int natasha = 10;
     srand(time(0));
     GameBoard gameBoard;
     gameBoard.Print();
