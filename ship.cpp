@@ -5,7 +5,7 @@ void Ship::Create_random(GameBoard& gameBoard, int size_ship, int num_ships)
 {
     _size = size_ship;
     _cells = new GameBoardCell[size_ship];
-    // заполняем клетки в зависимости от начала координат корябля и его направления
+    // заполняем клетки в зависимости от начала координат корабля и его направления
     int x, y;
     int dir;
     int count_ship = 0;
