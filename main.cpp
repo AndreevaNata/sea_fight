@@ -18,9 +18,29 @@ int main(int argc, char** argv)
     do {
         cout << "Enter x and y coord: X_Y: " << endl;
         int x;
+        char fx;
         int y;
-        cin >> x >> y;
-        --x;
+        bool run = true;
+        while (run) {
+            run = false;
+            cin >> fx >> y;
+            switch (fx) {
+                case('a'): { x = 0; break; }
+                case('b'): { x = 1; break; }
+                case('c'): { x = 2; break; }
+                case('d'): { x = 3; break; }
+                case('e'): { x = 4; break; }
+                case('f'): { x = 5; break; }
+                case('g'): { x = 6; break; }
+                case('h'): { x = 7; break; }
+                case('i'): { x = 8; break; }
+                case('j'): { x = 9; break; }
+                default: { cout << "This letter is not permitted. Choose X from: |a b c d e f g h i j| and Y from: |1 2 3 4 5 6 7 8 9 10| - "; run = true; }
+            }
+            if ((y < 1 || y > 10) && !run) {
+                cout << "This letter is not permitted. Choose X from: |a b c d e f g h i j| and Y from: |1 2 3 4 5 6 7 8 9 10| - "; run = true;
+            }
+        }
         --y;
         gameBoard.Shoot(x, y);
         gameBoard.Print();
