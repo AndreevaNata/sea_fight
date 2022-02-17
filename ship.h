@@ -55,7 +55,7 @@ public:
     { _cells[y][x].SetState(state); }
 
     CellState GetState(int x, int y)
-    { if (x >= 0 || y >= 0 || x < _size || y < _size)
+    { if (x >= 0 && y >= 0 && x < _size && y < _size)
             return _cells[y][x].GetState();
         else
             return OutOfBoard;
