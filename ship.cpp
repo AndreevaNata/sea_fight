@@ -3,7 +3,6 @@ const int N = 10;
 class GameBoard;
 void Ship::Create_random(GameBoard& gameBoard, int size_ship, int num_ships)
 {
-    //ffff
     _size = size_ship;
     _cells = new GameBoardCell[size_ship];
     // заполняем клетки в зависимости от начала координат корабля и его направления
@@ -20,20 +19,19 @@ void Ship::Create_random(GameBoard& gameBoard, int size_ship, int num_ships)
         bool setting_is_possible = true;
         dir = rand() % 4;
         for (int i = 0; i < size_ship; i++) {
-
-            if (gameBoard.GetState(x, y) == Empty &&
-                gameBoard.GetState(x, y + 1) != Deck  &&
-                gameBoard.GetState(x, y - 1) != Deck &&
-                gameBoard.GetState(x + 1, y) != Deck &&
-                gameBoard.GetState(x + 1, y + 1) != Deck &&
-                gameBoard.GetState(x + 1, y - 1) != Deck &&
-                gameBoard.GetState(x - 1, y) != Deck &&
-                gameBoard.GetState(x - 1, y + 1) != Deck &&
-                gameBoard.GetState(x - 1, y - 1) != Deck) {
-
-                setting_is_possible = true;
+            if (x < 0 || y < 0 || x >= N || y >= N) {
+                setting_is_possible = false;
+                break;
             }
-            else {
+            if (_cells[i].Cell(x, y) ||
+                _cells[i].Cell(x, y + 1) ||
+                _cells[i].Cell(x, y - 1) ||
+                _cells[i].Cell(x + 1, y) ||
+                _cells[i].Cell(x + 1, y + 1) ||
+                _cells[i].Cell(x + 1, y - 1) ||
+                _cells[i].Cell(x - 1, y) ||
+                _cells[i].Cell(x - 1, y + 1) ||
+                _cells[i].Cell(x - 1, y - 1)){
                 setting_is_possible = false;
                 break;
             }
