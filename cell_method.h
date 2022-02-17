@@ -53,7 +53,8 @@ public:
         else
             cout << '*';
     }
-    void Opponent()
+
+    void PrintBot()
     {
         if (_state == Empty)
             cout << ' ';
@@ -64,6 +65,7 @@ public:
         else
             cout << '*';
     }
+
 
 };
 

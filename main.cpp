@@ -13,8 +13,12 @@ class GameBoard;
 int main(int argc, char** argv)
 {   int natasha = 10;
     srand(time(0));
-    GameBoard gameBoard;
-    gameBoard.Print();
+    GameBoard Player;
+    GameBoard Bot;
+    Player.Generate();
+    Player.Print();
+    Bot.GenerateBot();
+    Bot.PrintBot();
     do {
         cout << "Enter x and y coord: X_Y: " << endl;
         int x;
@@ -42,9 +46,10 @@ int main(int argc, char** argv)
             }
         }
         --y;
-        gameBoard.Shoot(x, y);
-        gameBoard.Print();
-    } while (!gameBoard.AllShipsDestroyed());
+        Bot.Shoot(x, y);
+        Player.Print();
+        Bot.PrintBot();
+    } while (!Player.AllShipsDestroyed());
     return 0;
 }
 
@@ -112,12 +117,45 @@ void GameBoard::Generate()
     }
 
 }
+void GameBoard::GenerateBot()
+{
+    // заполняем игровое поле пустыми клетками
+
+    int idx = 0;
+    for (int i = 0; i < _size; i++)
+        for (int j = 0; j < _size; j++)
+            _cells[i][j].SetState(Empty);
+    // расставяем 4-х палубные
+    _ships[idx++].Create_random(*this, 4, 1);
+    // расставяем 3-х палубные
+    _ships[idx++].Create_random(*this, 3, 2);
+
+    // расставяем 2-х палубные
+    _ships[idx++].Create_random(*this, 2, 3);
+
+    // расставяем 1-х палубные
+    _ships[idx++].Create_random(*this, 1, 4);
+}
+
 
 void GameBoard::Print()
 {
     cout<< "Player's bord"<<endl;
+    cout << ' ' << ' ';
+    cout << 'a' << ' ';
+    cout << 'b' << ' ';
+    cout << 'c' << ' ';
+    cout << 'd' << ' ';
+    cout << 'e' << ' ';
+    cout << 'f' << ' ';
+    cout << 'g' << ' ';
+    cout << 'h' << ' ';
+    cout << 'i' << ' ';
+    cout << 'j' << ' ';
+    cout << endl;
     for (int i = 0; i < _size; i++)
     {
+        cout<<i+1;
         cout << "|";
         for (int j = 0; j < _size; j++)
         {
@@ -126,13 +164,28 @@ void GameBoard::Print()
         }
         cout << endl;
     }
-    cout<< "Opponent's bord"<<endl;
-    for (int i = 0; i < _size; i++)
-    {
+
+}
+void GameBoard::PrintBot() {
+    cout << "Bot's bord" << endl;
+    cout << ' ' << ' ';
+    cout << 'a' << ' ';
+    cout << 'b' << ' ';
+    cout << 'c' << ' ';
+    cout << 'd' << ' ';
+    cout << 'e' << ' ';
+    cout << 'f' << ' ';
+    cout << 'g' << ' ';
+    cout << 'h' << ' ';
+    cout << 'i' << ' ';
+    cout << 'j' << ' ';
+    cout << endl;
+    for (int i = 0; i < _size; i++) {
+        cout << i + 1;
         cout << "|";
-        for (int j = 0; j < _size; j++)
-        {
-            _cells[i][j].Opponent();
+        for (int j = 0; j < _size; j++) {
+
+            _cells[i][j].PrintBot();
             cout << "|";
         }
         cout << endl;

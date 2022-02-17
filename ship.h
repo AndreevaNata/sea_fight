@@ -44,16 +44,22 @@ private:
     Ship _ships[_shipsCount];   // корабли
 
     // функция создание игрового поля
-    void Generate();
+
 public:
-    GameBoard()
-    { Generate(); }
 
     ~GameBoard() { }
-
+    void Generate();
+    void GenerateBot();
     // функция установки статуса клетки игрового поля
     void SetState(int x, int y, CellState state)
     { _cells[y][x].SetState(state); }
+
+    CellState GetState(int x, int y)
+    { if (x >= 0 || y >= 0 || x < _size || y < _size)
+            return _cells[y][x].GetState();
+        else
+            return OutOfBoard;
+    }
 
     // функция возвращает, является ли клетка палубой
     bool IsDeck(int x, int y)
@@ -61,6 +67,7 @@ public:
 
     // функция печати игрового поля
     void Print();
+    void PrintBot();
 
     // функция возвращает число клеток игровой области
     int GetCount()
