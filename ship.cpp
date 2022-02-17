@@ -2,7 +2,7 @@
 const int N = 10;
 class GameBoard;
 void Ship::Create_random(GameBoard& gameBoard, int size_ship, int num_ships)
-{
+{ //gggggg
     _size = size_ship;
     _cells = new GameBoardCell[size_ship];
     // заполняем клетки в зависимости от начала координат корабля и его направления
