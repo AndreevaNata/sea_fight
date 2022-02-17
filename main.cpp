@@ -125,15 +125,15 @@ void GameBoard::GenerateBot()
     for (int i = 0; i < _size; i++)
         for (int j = 0; j < _size; j++)
             _cells[i][j].SetState(Empty);
-    // расставяем 4-х палубные
+    // расставляем 4-х палубные
     _ships[idx++].Create_random(*this, 4, 1);
-    // расставяем 3-х палубные
+    // расставляем 3-х палубные
     _ships[idx++].Create_random(*this, 3, 2);
 
-    // расставяем 2-х палубные
+    // расставляем 2-х палубные
     _ships[idx++].Create_random(*this, 2, 3);
 
-    // расставяем 1-х палубные
+    // расставляем 1-х палубные
     _ships[idx++].Create_random(*this, 1, 4);
 }
 
@@ -141,7 +141,7 @@ void GameBoard::GenerateBot()
 void GameBoard::Print()
 {
     cout<< "Player's bord"<<endl;
-    cout << ' ' << ' ';
+    cout << ' ' << ' ' << ' ';
     cout << 'a' << ' ';
     cout << 'b' << ' ';
     cout << 'c' << ' ';
@@ -155,7 +155,10 @@ void GameBoard::Print()
     cout << endl;
     for (int i = 0; i < _size; i++)
     {
-        cout<<i+1;
+        if (i == _size-1) {
+            cout << i + 1; }
+        else {
+            cout << ' ' << i + 1; }
         cout << "|";
         for (int j = 0; j < _size; j++)
         {
@@ -168,7 +171,7 @@ void GameBoard::Print()
 }
 void GameBoard::PrintBot() {
     cout << "Bot's bord" << endl;
-    cout << ' ' << ' ';
+    cout << ' ' << ' ' << ' ';
     cout << 'a' << ' ';
     cout << 'b' << ' ';
     cout << 'c' << ' ';
@@ -181,7 +184,10 @@ void GameBoard::PrintBot() {
     cout << 'j' << ' ';
     cout << endl;
     for (int i = 0; i < _size; i++) {
-        cout << i + 1;
+        if (i == _size-1) {
+            cout << i + 1; }
+        else {
+            cout << ' ' << i + 1; }
         cout << "|";
         for (int j = 0; j < _size; j++) {
 
