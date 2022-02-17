@@ -19,21 +19,25 @@ void Ship::Create_random(GameBoard& gameBoard, int size_ship, int num_ships)
         bool setting_is_possible = true;
         dir = rand() % 4;
         for (int i = 0; i < size_ship; i++) {
-            if (x < 0 || y < 0 || x >= N || y >= N) {
+
+
+            if (gameBoard.GetState(x, y) == Empty &&
+                gameBoard.GetState(x, y + 1) != Deck &&
+                    gameBoard.GetState(x, y - 1)!= Deck &&
+                    gameBoard.GetState(x + 1, y)!= Deck &&
+                    gameBoard.GetState(x + 1, y + 1)!= Deck &&
+                    gameBoard.GetState(x + 1, y - 1)!= Deck &&
+                    gameBoard.GetState(x - 1, y)!= Deck &&
+                    gameBoard.GetState(x - 1, y + 1)!= Deck &&
+                    gameBoard.GetState(x - 1, y - 1)!= Deck) {
+                setting_is_possible = true;
+            }
+            else {
                 setting_is_possible = false;
                 break;
             }
-            if (_cells[i].Cell(x, y) ||
-                _cells[i].Cell(x, y + 1) ||
-                _cells[i].Cell(x, y - 1) ||
-                _cells[i].Cell(x + 1, y) ||
-                _cells[i].Cell(x + 1, y + 1) ||
-                _cells[i].Cell(x + 1, y - 1) ||
-                _cells[i].Cell(x - 1, y) ||
-                _cells[i].Cell(x - 1, y + 1) ||
-                _cells[i].Cell(x - 1, y - 1)){
-                setting_is_possible = false;
-                break;
+
+
             }
             switch (dir) {
                 case 0:
@@ -49,7 +53,7 @@ void Ship::Create_random(GameBoard& gameBoard, int size_ship, int num_ships)
                     y--;
                     break;
             }
-        }
+
         if (setting_is_possible) {
             x = temp_x;
             y = temp_y;
