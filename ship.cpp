@@ -1,4 +1,5 @@
 #include "ship.h"
+#include "bot.h"
 const int N = 10;
 class GameBoard;
 void Ship::Create_random(GameBoard& gameBoard, int size_ship, int num_ships)
@@ -127,7 +128,7 @@ ShipState Ship::GetState()
     return _state;
 }
 
-void Ship::Shoot(GameBoard& gameBoard, int x, int y)
+void Ship::Shoot_ship(GameBoard& gameBoard, int x, int y)
 {
     for (int i = 0; i < _size; i++)
         if (_cells[i].TryHit(x, y))
@@ -163,21 +164,21 @@ void Ship::Shoot(GameBoard& gameBoard, int x, int y)
         }
     }
 }
-void GameBoard::Shoot(int x, int y)
-{
+bool GameBoard::Shoot_function(int x, int y) {
     // просмотрим все корабли
+
     for (int i = 0; i < _shipsCount; i++)
         // проверим попадание
-        if (_ships[i].TryHit(x, y))
-        {
+        if (_ships[i].TryHit(x, y)) {
             // если попадаем - стреляем по кораблю
-            _ships[i].Shoot(*this, x, y);
+            _ships[i].Shoot_ship(*this, x, y);
+            return true;
             break;
-        }
-        else
-        {
+        } else {
             // иначе засчитываем промах
             _cells[y][x].SetState(Miss);
+            //после промаха игрока, должен появиться бот
+           return false;
         }
 }
 

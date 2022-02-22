@@ -26,7 +26,7 @@ public:
     ShipState GetState();
 
     // функция выстрела по кораблю, возвращает состояние корабля, после выстрела
-    void Shoot(GameBoard& gameBoard, int x, int y);
+    void Shoot_ship(GameBoard& gameBoard, int x, int y);
 
     bool TryHit(int x, int y);
 };
@@ -42,12 +42,18 @@ private:
     static const int _shipsCount = _4DeckShipCount + _3DeckShipCount + _2DeckShipCount + _1DeckShipCount;   // число кораблей
     GameBoardCell _cells[_size][_size]; // клетки игрового поля
     Ship _ships[_shipsCount];   // корабли
+    bool BotHit = false;
+    bool BotHitForSecondBotHit = false;
+    bool SecondBotHit = false;
+    bool BotMiss[4] = {false, false, false, false}; //Попадание бота по четырём сторонам
+
 
     // функция создание игрового поля
 
 public:
 
     ~GameBoard() { }
+    void Bot_step();
     void Generate();
     void GenerateBot();
     // функция установки статуса клетки игрового поля
@@ -78,7 +84,7 @@ public:
     { return _size; }
 
     // функция - выстрел в игровое поле
-    void Shoot(int x, int y);
+    bool Shoot_function(int x, int y);
 
     // функция проверки - уничтожены ли все корабли на поле
     bool AllShipsDestroyed();
