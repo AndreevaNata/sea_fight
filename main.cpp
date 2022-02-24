@@ -10,7 +10,7 @@ using namespace std;
 class GameBoard;
 //r
 // ВАУ НАТАША? hghghgh
-
+const int N = 10;
 int main(int argc, char** argv)
 {   int natasha = 10;
     srand(time(0));
@@ -20,14 +20,19 @@ int main(int argc, char** argv)
     Player.Print();
     Bot.GenerateBot();
     Bot.PrintBot();
+    int Direction = -1;
     bool step = true;
+    bool BotHit = false;
+    bool BotHitForSecondBotHit = false;
+    bool SecondBotHit = false;
+    bool BotMiss[4] = {false, false, false, false};
+    int x,y;
     do {
         if (step == true) {
             cout << "\nYour step..." << endl;
             cout << "Enter x and y coord: X_Y: " << endl;
-            int x;
             char fx;
-            int y;
+
             bool run = true;
             while (run) {
                 run = false;
@@ -99,24 +104,78 @@ int main(int argc, char** argv)
             }
 
         } else {
-            bool step_bot_two = false;
+
             cout << "\nStep Bot...\n"<< endl;
-            int x, y;
-            x = rand() % 4 + 5;
-            y = rand() % 10;
+            if (BotHit == true){
+                if (SecondBotHit == false){
+                    while (true){
+                        Direction = rand() % 4;
+                        if (Direction == 1 && BotMiss[0] == false && y > 0){
+                            y--; //Стреляет левее
+                            break;
+                        }
+                        else if (Direction == 2 && BotMiss[1] == false && x> 0){
+                            x--; //Стреляет выше
+                            break;
+                        }
+                        else if (Direction == 3 && BotMiss[2] == false && y < 9){
+                            y++; //Стреляет правее
+                            break;
+                        }
+                        else if (Direction == 4 && BotMiss[3] == false && x < 9){
+                            x++; //Стреляет ниже
+                            break;
+                        }
+                        else{
+                            BotMiss[Direction - 1] = true; //Если никуда не получилось выстрелить
+                        }
+                        if (BotMiss[0] == true && BotMiss[1] == true && BotMiss[2] == true && BotMiss[3] == true){
+                            break; //Если уже были попытки выстрелить по всем сторонам
+                        }
+                    }
+                }
+                else{ //При втором попадании стреляет в направлении, в котором раньше стрелял
+                    if (Direction == 1 && y > 0){
+                        y--;
+                    }
+                    else if (Direction == 2 && x > 0){
+                        x--;
+                    }
+                    else if (Direction == 3 && y < 9){
+                        y++;
+                    }
+                    else if (Direction == 4 && x < 9){
+                        x++;
+                    }
+                    else{
+                        SecondBotHit = false;
+                    }
+                }
+            }
+            else {
+                x = rand() % N;
+                y = rand() % N;
+            }
 
 
-            cout << "Bot entered the coordinates: x[" << x << "] and y[" << y << "]\n";
-            if (!(Player.Shoot_function(x, y))){
-                step = true;
-                Player.Print();
-                Bot.PrintBot();
-            cout << "\nBot missed!\a" << endl;}
-
-            else { step_bot_two = true;
-                Player.Print();
-                Bot.PrintBot();
-                cout << "\n\t\t\t\tBot hit your ship!\a" << endl;}
+                cout << "Bot entered the coordinates: x[" << x << "] and y[" << y << "]\n";
+                if (!(Player.Shoot_function(x, y))) {
+                    step = true;
+                    Player.Print();
+                    Bot.PrintBot();
+                    cout << "\nBot missed!\a" << endl;
+                } else {
+                    if (BotHit == true){
+                        BotHitForSecondBotHit = true;
+                    }
+                    if (BotHitForSecondBotHit == true){
+                        SecondBotHit = true;
+                    }
+                    BotHit = true;
+                    Player.Print();
+                    Bot.PrintBot();
+                    cout << "\n\t\t\t\tBot hit your ship!\a" << endl;
+                }
 
 
     }
