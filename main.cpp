@@ -26,7 +26,8 @@ int main(int argc, char** argv)
     bool BotHitForSecondBotHit = false;
     bool SecondBotHit = false;
     bool BotMiss[4] = {false, false, false, false};
-    int x,y;
+    int x = 0,y = 0;
+    int Botx = 0, Boty = 0;
     do {
         if (step == true) {
             cout << "\nYour step..." << endl;
@@ -109,21 +110,21 @@ int main(int argc, char** argv)
             if (BotHit == true){
                 if (SecondBotHit == false){
                     while (true){
-                        Direction = rand() % 4;
-                        if (Direction == 1 && BotMiss[0] == false && y > 0){
-                            y--; //Стреляет левее
+                        Direction = 1+rand() % 4;
+                        if (Direction == 1 && BotMiss[0] == false && Boty > 0){
+                            Boty--; //Стреляет левее
                             break;
                         }
-                        else if (Direction == 2 && BotMiss[1] == false && x> 0){
-                            x--; //Стреляет выше
+                        else if (Direction == 2 && BotMiss[1] == false && Botx> 0){
+                            Botx--; //Стреляет выше
                             break;
                         }
-                        else if (Direction == 3 && BotMiss[2] == false && y < 9){
-                            y++; //Стреляет правее
+                        else if (Direction == 3 && BotMiss[2] == false && Boty < 9){
+                            Boty++; //Стреляет правее
                             break;
                         }
-                        else if (Direction == 4 && BotMiss[3] == false && x < 9){
-                            x++; //Стреляет ниже
+                        else if (Direction == 4 && BotMiss[3] == false && Botx < 9){
+                            Botx++; //Стреляет ниже
                             break;
                         }
                         else{
@@ -135,17 +136,17 @@ int main(int argc, char** argv)
                     }
                 }
                 else{ //При втором попадании стреляет в направлении, в котором раньше стрелял
-                    if (Direction == 1 && y > 0){
-                        y--;
+                    if (Direction == 1 && Boty > 0){
+                        Boty--;
                     }
-                    else if (Direction == 2 && x > 0){
-                        x--;
+                    else if (Direction == 2 && Botx > 0){
+                        Botx--;
                     }
-                    else if (Direction == 3 && y < 9){
-                        y++;
+                    else if (Direction == 3 && Boty < 9){
+                        Boty++;
                     }
-                    else if (Direction == 4 && x < 9){
-                        x++;
+                    else if (Direction == 4 && Botx < 9){
+                        Botx++;
                     }
                     else{
                         SecondBotHit = false;
@@ -153,27 +154,30 @@ int main(int argc, char** argv)
                 }
             }
             else {
-                x = rand() % N;
-                y = rand() % N;
+                Botx = rand() % N;
+                Boty = rand() % N;
+
             }
 
 
-                cout << "Bot entered the coordinates: x[" << x << "] and y[" << y << "]\n";
-                if (!(Player.Shoot_function(x, y))) {
+               // cout << "Bot entered the coordinates: x[" << x+1<< "] and y[" << y+1 << "]\n";
+                if (!(Player.Shoot_function(Botx, Boty))) {
                     step = true;
                     Player.Print();
                     Bot.PrintBot();
+                    cout << "Bot entered the coordinates: x[" << Botx+1<< "] and y[" << Boty+1 << "]\n";
                     cout << "\nBot missed!\a" << endl;
                 } else {
-                    if (BotHit == true){
+                    if (BotHit){
                         BotHitForSecondBotHit = true;
                     }
-                    if (BotHitForSecondBotHit == true){
+                    if (BotHitForSecondBotHit){
                         SecondBotHit = true;
                     }
                     BotHit = true;
                     Player.Print();
                     Bot.PrintBot();
+                    cout << "Bot entered the coordinates: x[" << x+1<< "] and y[" << y+1 << "]\n";
                     cout << "\n\t\t\t\tBot hit your ship!\a" << endl;
                 }
 
