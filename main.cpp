@@ -4,12 +4,22 @@
 #include "cell_method.h"
 #include "ship.h"
 #include <ctime>
+#include "bot.h"
+#include <Windows.h>
+#include <iomanip>
+#include <stdio.h>
+#include <dos.h>
 using namespace std;
 // заранее объявим, чтобы можно было указывать в качестве аргумент функций класса Ship
 class GameBoard;
 
 int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
+    HANDLE hStdout;// для очистки консоли
+    hStdout = GetStdHandle(STD_OUTPUT_HANDLE);//для очистки консоли
     srand(time(0));
+    const int N = 10;
     GameBoard Player;
     GameBoard Bot;
     GameBoard Ar;
@@ -17,6 +27,16 @@ int main(int argc, char** argv) {
     Player.Print();
     Bot.GenerateBot();
     Bot.PrintBot();
+    int Direction = -1;
+
+
+    bool step = true;
+    bool BotHit = false;
+    bool BotHitForSecondBotHit = false;
+    bool SecondBotHit = false;
+    bool BotMiss[4] = {false, false, false, false};
+    int x = 0,y = 0;
+    int Botx = 0, Boty = 0;
     Ship ship;
     do {
         cout << "Enter x and y coord: X_Y: " << endl;
@@ -29,6 +49,211 @@ int main(int argc, char** argv) {
         Player.Print();
         Bot.PrintBot();
     } while (!Player.AllShipsDestroyed());
+        if (step == true) {
+            cout << "\nYour step..." << endl;
+            cout << "Enter x and y coord: X_Y: " << endl;
+            char fx;
+
+            bool run = true;
+            while (run) {
+                run = false;
+                cin >> fx >> y;
+                switch (fx) {
+                    case ('a'): {
+                        x = 0;
+                        break;
+                    }
+                    case ('b'): {
+                        x = 1;
+                        break;
+                    }
+                    case ('c'): {
+                        x = 2;
+                        break;
+                    }
+                    case ('d'): {
+                        x = 3;
+                        break;
+                    }
+                    case ('e'): {
+                        x = 4;
+                        break;
+                    }
+                    case ('f'): {
+                        x = 5;
+                        break;
+                    }
+                    case ('g'): {
+                        x = 6;
+                        break;
+                    }
+                    case ('h'): {
+                        x = 7;
+                        break;
+                    }
+                    case ('i'): {
+                        x = 8;
+                        break;
+                    }
+                    case ('j'): {
+                        x = 9;
+                        break;
+                    }
+                    default: {
+                        cout
+                                << "This letter is not permitted. Choose X from: |a b c d e f g h i j| and Y from: |1 2 3 4 5 6 7 8 9 10| - ";
+                        run = true;
+                    }
+                }
+                if ((y < 1 || y > 10) && !run) {
+                    cout
+                            << "This letter is not permitted. Choose X from: |a b c d e f g h i j| and Y from: |1 2 3 4 5 6 7 8 9 10| - ";
+                    run = true;
+                }
+            }
+            --y;
+            if (!Bot.Shoot_function(x, y)){//стреляем в поле бота
+                step = false;
+                system ("cls");
+                Player.Print();
+                Bot.PrintBot();
+                cout << "\nYou missed!\a" << endl;}
+            else  {
+                system ("cls");
+                Player.Print();
+                Bot.PrintBot();
+                cout << "\nYou hit bot's ship\a" << endl;
+            }
+
+        } else {
+
+            cout << "\nStep Bot...\n"<< endl;
+            if (BotHit == true){
+                if (SecondBotHit == false){
+                    while (true){
+                        Direction = 1+rand() % 4;
+                        if (Direction == 1 && BotMiss[0] == false && Boty > 0){
+                            Boty--; //Стреляет левее
+                            break;
+                        }
+                        else if (Direction == 2 && BotMiss[1] == false && Botx> 0){
+                            Botx--; //Стреляет выше
+                            break;
+                        }
+                        else if (Direction == 3 && BotMiss[2] == false && Boty < 9){
+                            Boty++; //Стреляет правее
+                            break;
+                        }
+                        else if (Direction == 4 && BotMiss[3] == false && Botx < 9){
+                            Botx++; //Стреляет ниже
+                            break;
+                        }
+                        else{
+                            BotMiss[Direction - 1] = true; //Если никуда не получилось выстрелить
+                        }
+                        if (BotMiss[0] == true && BotMiss[1] == true && BotMiss[2] == true && BotMiss[3] == true){
+                            break; //Если уже были попытки выстрелить по всем сторонам
+                        }
+                    }
+                }
+                else{ //При втором попадании стреляет в направлении, в котором раньше стрелял
+                    if (Direction == 1 && Boty > 0){
+                        Boty--;
+                    }
+                    else if (Direction == 2 && Botx > 0){
+                        Botx--;
+                    }
+                    else if (Direction == 3 && Boty < 9){
+                        Boty++;
+                    }
+                    else if (Direction == 4 && Botx < 9){
+                        Botx++;
+                    }
+                    else{
+                        SecondBotHit = false;
+                    }
+                }
+            }
+            else {
+                Botx = rand() % N;
+                Boty = rand() % N;
+
+            }
+
+
+               // cout << "Bot entered the coordinates: x[" << x+1<< "] and y[" << y+1 << "]\n";
+                if (!(Player.Shoot_function(Botx, Boty))) {
+                    step = true;
+                    system ("cls");
+                    Player.Print();
+                    Bot.PrintBot();
+                    char Botx_char;
+                    switch (Botx) {
+                        case (0): {
+                            Botx_char = 'a';
+                            break;
+                        }
+                        case (1): {
+                            Botx_char = 'b';
+                            break;
+                        }
+                        case (2): {
+                            Botx_char = 'c';
+                            break;
+                        }
+                        case (3): {
+                            Botx_char = 'd';
+                            break;
+                        }
+                        case (4): {
+                            Botx_char = 'e';
+                            break;
+                        }
+                        case (5): {
+                            Botx_char = 'f';
+                            break;
+                        }
+                        case (6): {
+                            Botx_char = 'g';
+                            break;
+                        }
+                        case (7): {
+                            Botx_char = 'h';
+                            break;
+                        }
+                        case (8): {
+                            Botx_char = 'i';
+                            break;
+                        }
+                        case (9): {
+                            Botx_char = 'j';
+                            break;
+                        }
+                    }
+                    cout << "Bot entered the coordinates: " << Botx_char<< " " << Boty+1 << ""
+                                                                                            ""
+                                                                                            "\n";
+                    cout << "\nBot missed!\a" << endl;
+                } else {
+                    if (BotHit){
+                        BotHitForSecondBotHit = true;
+                    }
+                    if (BotHitForSecondBotHit){
+                        SecondBotHit = true;
+                    }
+                    system ("cls");
+                    BotHit = true;
+                    system ("cls");
+
+                    Player.Print();
+                    Bot.PrintBot();
+                    cout << "Bot entered the coordinates: x[" << x+1<< "] and y[" << y+1 << "]\n";
+                    cout << "\n\t\t\t\tBot hit your ship!\a" << endl;
+                }
+
+
+    }
+    } while (!Player.AllShipsDestroyed() || !Bot.AllShipsDestroyed());
     return 0;
 }
 
