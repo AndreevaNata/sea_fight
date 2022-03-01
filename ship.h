@@ -1,6 +1,7 @@
 #include <iostream>
 #include "emun.h"
 #include "cell_method.h"
+#include <windows.h>
 
 // класс - корабль
 #ifndef UNTITLED12_SHIP_H
@@ -20,6 +21,10 @@ public:
     }
     void Create_random(GameBoard& gameBoard, int size_ship, int num_ships);
     void Create_hand(GameBoard& gameBoard, int size, int x, int y, bool horizontal);
+    bool Create_ship(int x, int y, int dir, string letter, int size_ship, GameBoard& gameBoard);
+    void Entry(int &x, int &y, const string& letter, int &pos, int n, int size_ship, GameBoard& gameBoard);
+
+
     ~Ship();
 
     // функция возвращает состояние корабля, выполнив проверку целостности всех палуб
@@ -48,10 +53,10 @@ private:
     bool BotMiss[4] = {false, false, false, false}; //Попадание бота по четырём сторонам
 
 
+
     // функция создание игрового поля
 
 public:
-
     ~GameBoard() { }
 
     void Generate();
@@ -74,7 +79,7 @@ public:
     // функция печати игрового поля
     void Print();
     void PrintBot();
-
+    void cls(HANDLE hConsole);
     // функция возвращает число клеток игровой области
     int GetCount()
     { return _size * _size; }

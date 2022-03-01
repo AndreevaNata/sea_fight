@@ -5,16 +5,18 @@
 #include "ship.h"
 #include <ctime>
 #include "bot.h"
+#include <iomanip>
+#include <stdio.h>
 using namespace std;
 // заранее объявим, чтобы можно было указывать в качестве аргумент функций класса Ship
 class GameBoard;
 
-const int N = 10;
-int main(int argc, char** argv)
-{   int natasha = 10;
+int main(int argc, char** argv) {
     srand(time(0));
+    const int N = 10;
     GameBoard Player;
     GameBoard Bot;
+    GameBoard Ar;
     Player.Generate();
     Player.Print();
     Bot.GenerateBot();
@@ -94,10 +96,12 @@ int main(int argc, char** argv)
 
             if (!Bot.Shoot_function(x, y)){//стреляем в поле бота
                 step = false;
+                system ("cls");
                 Player.Print();
                 Bot.PrintBot();
                 cout << "\nYou missed!" << endl;}
             else  {
+                system ("cls");
                 Player.Print();
                 Bot.PrintBot();
                 cout << "\nYou hit bot's ship\a" << endl;
@@ -168,17 +172,38 @@ int main(int argc, char** argv)
                // cout << "Bot entered the coordinates: x[" << x+1<< "] and y[" << y+1 << "]\n";
                 if (!(Player.Shoot_function(Botx, Boty))) {
                     step = true;
+                    system ("cls");
                     Player.Print();
                     Bot.PrintBot();
                     cout << "Bot entered the coordinates: x[" << Botx+1<< "] and y[" << Boty+1 << "]\n";
                     cout << "\nBot missed!" << endl;
                     SecondBotHit = false;
+                    char Botx_char;
+                    switch (Botx) {
+                        case (0): { Botx_char = 'a'; break; }
+                        case (1): { Botx_char = 'b'; break; }
+                        case (2): { Botx_char = 'c'; break; }
+                        case (3): { Botx_char = 'd'; break; }
+                        case (4): { Botx_char = 'e'; break; }
+                        case (5): { Botx_char = 'f'; break; }
+                        case (6): { Botx_char = 'g'; break; }
+                        case (7): { Botx_char = 'h'; break; }
+                        case (8): { Botx_char = 'i'; break; }
+                        case (9): { Botx_char = 'j'; break; }
+                    }
+                    cout << "Bot entered the coordinates: " << Botx_char<< " " << Boty+1 << ""
+                                                                                            ""
+                                                                                            "\n";
+                    cout << "\nBot missed!\a" << endl;
                 } else {
                     if (BotHit){
 
                         SecondBotHit = true;
                     }
+                    system ("cls");
                     BotHit = true;
+                    system ("cls");
+
                     Player.Print();
                     Bot.PrintBot();
                     cout << "Bot entered the coordinates: x[" << Botx+1<< "] and y[" << Boty+1 << "]\n";
@@ -191,8 +216,9 @@ int main(int argc, char** argv)
     return 0;
 }
 
-void GameBoard::Generate()
-{
+
+void GameBoard::Generate() {
+    GameBoard gameBoard;
     // заполняем игровое поле пустыми клетками
     for (int i = 0; i < _size; i++)
         for (int j = 0; j < _size; j++)
@@ -206,32 +232,31 @@ void GameBoard::Generate()
     if (nm == 0) {
         cout << "Enter x, y and position (if horizontal - 1, else - 0): X_Y_Position" << endl;
         int x, y;
-        bool pos;
-        for (int i = 0; i < _4DeckShipCount; i++) {
+        int pos;
+        string letter = "This letter is not permitted. Choose X from: |a b c d e f g h i j| and Y from: |1 2 3 4 5 6 7 8 9 10| and Position from |0(vertical) 1(horizontal)| - ";
+        int i = 0;
+        while (i < _4DeckShipCount) {
             cout << "4 deck ship (quantity " << _4DeckShipCount-i << "): ";
-            cin >> x >> y >> pos;
-            _ships[idx++].Create_hand(*this, 4, --x, --y, pos);
+            _ships[idx++].Entry(x, y, letter, pos, 3, 4, gameBoard);
             Print();
             cout << endl;
+            i++;
         }
         for (int i = 0; i < _3DeckShipCount; i++) {
             cout << "3 deck ship (quantity " << _3DeckShipCount-i << "): ";
-            cin >> x >> y >> pos;
-            _ships[idx++].Create_hand(*this, 3, --x, --y, pos);
+            _ships[idx++].Entry(x, y, letter, pos, 3, 3, gameBoard);
             Print();
             cout << endl;
         }
         for (int i = 0; i < _2DeckShipCount; i++) {
             cout << "2 deck ship (quantity " << _2DeckShipCount-i << "): ";
-            cin >> x >> y >> pos;
-            _ships[idx++].Create_hand(*this, 2, --x, --y, pos);
+            _ships[idx++].Entry(x, y, letter, pos, 3, 2, gameBoard);
             Print();
             cout << endl;
         }
         for (int i = 0; i < _1DeckShipCount; i++) {
             cout << "1 deck ship (quantity " << _1DeckShipCount-i << "): ";
-            cin >> x >> y >> pos;
-            _ships[idx++].Create_hand(*this, 1, --x, --y, pos);
+            _ships[idx++].Entry(x, y, letter, pos, 3, 1, gameBoard);
             Print();
             cout << endl;
         }
