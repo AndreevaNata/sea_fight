@@ -4,7 +4,6 @@ class GameBoard;
 void Ship::Create_random(GameBoard& gameBoard, int size_ship, int num_ships)
 {
     _size = size_ship;
-    _cells = new GameBoardCell[size_ship];
     // заполняем клетки в зависимости от начала координат корабля и его направления
     int x, y;
     int dir;
@@ -13,74 +12,78 @@ void Ship::Create_random(GameBoard& gameBoard, int size_ship, int num_ships)
         x = rand() % N;
         y = rand() % N;
 
-        int temp_x = x;
-        int temp_y = y;
-
-        bool setting_is_possible = true;
         dir = rand() % 4;
-        for (int i = 0; i < size_ship; i++) {
 
+        if (Create_ship(x, y, dir, "", size_ship, gameBoard)) {
+            count_ship++;
+        }
+    }
+}
 
-            if (gameBoard.GetState(x, y) == Empty &&
-                gameBoard.GetState(x, y + 1) != Deck &&
-                gameBoard.GetState(x, y - 1) != Deck &&
-                gameBoard.GetState(x + 1, y) != Deck &&
-                gameBoard.GetState(x + 1, y + 1) != Deck &&
-                gameBoard.GetState(x + 1, y - 1) != Deck &&
-                gameBoard.GetState(x - 1, y) != Deck &&
-                gameBoard.GetState(x - 1, y + 1) != Deck &&
-                gameBoard.GetState(x - 1, y - 1) != Deck) {
-                setting_is_possible = true;
-            } else {
-                setting_is_possible = false;
+bool Ship::Create_ship(int x, int y, int dir, string letter, int size_ship, GameBoard& gameBoard) {
+    bool setting_is_possible = true;
+    _cells = new GameBoardCell[size_ship];
+    int _x, _y;
+    _x = x;
+    _y = y;
+    for (int i = 0; i < size_ship; i++) {
+        if (gameBoard.GetState(_x, _y) == Empty &&
+            gameBoard.GetState(_x, _y + 1) != Deck &&
+            gameBoard.GetState(_x, _y - 1) != Deck &&
+            gameBoard.GetState(_x + 1, _y) != Deck &&
+            gameBoard.GetState(_x + 1, _y + 1) != Deck &&
+            gameBoard.GetState(_x + 1, _y - 1) != Deck &&
+            gameBoard.GetState(_x - 1, _y) != Deck &&
+            gameBoard.GetState(_x - 1, _y + 1) != Deck &&
+            gameBoard.GetState(_x - 1, _y - 1) != Deck) {
+            setting_is_possible = true;
+        } else {
+            setting_is_possible = false;
+            cout << letter;
+            break;
+        }
+        switch (dir) {
+            case 0:
+                _y--;
                 break;
-            }
-
-
+            case 1:
+                _x++;
+                break;
+            case 2:
+                _x--;
+                break;
+            case 3:
+                _y++;
+                break;
+        }
+    }
+    if (setting_is_possible) {
+        for (int i = 0; i < size_ship; i++) {
+            _cells[i].SetX(x);
+            _cells[i].SetY(y);
+            gameBoard.SetState(x , y, Deck);
             switch (dir) {
                 case 0:
-                    x++;
+                    y--;
                     break;
                 case 1:
-                    y++;
+                    x++;
                     break;
                 case 2:
                     x--;
                     break;
                 case 3:
-                    y--;
+                    y++;
                     break;
             }
         }
-
-        if (setting_is_possible) {
-            x = temp_x;
-            y = temp_y;
-
-            for (int i = 0; i < size_ship; i++) {
-                _cells[i].SetX(x);
-                _cells[i].SetY(y);
-                gameBoard.SetState(x , y, Deck);
-                switch (dir) {
-                    case 0:
-                        x++;
-                        break;
-                    case 1:
-                        y++;
-                        break;
-                    case 2:
-                        x--;
-                        break;
-                    case 3:
-                        y--;
-                        break;
-                }
-            }
-            count_ship++;
-        }
-
+        return true;
+    }
+    else {
+        return false;
     }
 }
+
 void Ship::Create_hand(GameBoard& gameBoard, int size, int x, int y, bool horizontal)
 {
     _size = size;
@@ -189,6 +192,50 @@ bool GameBoard::AllShipsDestroyed()
         if (_ships[i].GetState() != Destroyed)
             return false;
     return true;    // иначе true
+}
+
+void Ship::Entry(int &x, int &y, const string& letter, int &pos, int n, int size_ship, GameBoard& gameBoard) {
+    Ship ship;
+    char fx;
+    bool run = true;
+    while (run) {
+        run = false;
+        //если нужно ввести 3 элемента (x, y, position)
+        if (n == 3) {
+            cin >> fx >> y >> pos;
+            while (cin.fail() or (pos!=0 and pos!=1)) {
+                cin.clear();
+                cin.ignore(32767, '\n');
+                cout << letter;
+                cin >> fx >> y >> pos;
+            }
+        }
+        else { cin >> fx >> y; }
+        switch (fx) {
+            case ('a'): { x = 0; break; }
+            case ('b'): { x = 1; break; }
+            case ('c'): { x = 2; break; }
+            case ('d'): { x = 3; break; }
+            case ('e'): { x = 4; break; }
+            case ('f'): { x = 5; break; }
+            case ('g'): { x = 6; break; }
+            case ('h'): { x = 7; break; }
+            case ('i'): { x = 8; break; }
+            case ('j'): { x = 9; break; }
+            default: { cout << letter; run = true; }
+        }
+        if (((y < 1 || y > 10) && !run) or cin.fail()) {
+            cout << letter; run = true; }
+
+        --y;
+        if (n==3) {
+            if(!(ship.Ship::Create_ship(x,y,pos,letter,size_ship,gameBoard))) {
+                cout << letter; run = true;
+            }
+        }
+    }
+        cin.clear();
+        cin.ignore(32767, '\n');
 }
 
 

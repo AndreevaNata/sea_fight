@@ -7,45 +7,24 @@
 using namespace std;
 // заранее объявим, чтобы можно было указывать в качестве аргумент функций класса Ship
 class GameBoard;
-//r
-// ВАУ НАТАША? hghghgh
 
-int main(int argc, char** argv)
-{   int natasha = 10;
+int main(int argc, char** argv) {
     srand(time(0));
     GameBoard Player;
     GameBoard Bot;
+    GameBoard Ar;
     Player.Generate();
     Player.Print();
     Bot.GenerateBot();
     Bot.PrintBot();
+    Ship ship;
     do {
         cout << "Enter x and y coord: X_Y: " << endl;
-        int x;
-        char fx;
-        int y;
-        bool run = true;
-        while (run) {
-            run = false;
-            cin >> fx >> y;
-            switch (fx) {
-                case('a'): { x = 0; break; }
-                case('b'): { x = 1; break; }
-                case('c'): { x = 2; break; }
-                case('d'): { x = 3; break; }
-                case('e'): { x = 4; break; }
-                case('f'): { x = 5; break; }
-                case('g'): { x = 6; break; }
-                case('h'): { x = 7; break; }
-                case('i'): { x = 8; break; }
-                case('j'): { x = 9; break; }
-                default: { cout << "This letter is not permitted. Choose X from: |a b c d e f g h i j| and Y from: |1 2 3 4 5 6 7 8 9 10| - "; run = true; }
-            }
-            if ((y < 1 || y > 10) && !run) {
-                cout << "This letter is not permitted. Choose X from: |a b c d e f g h i j| and Y from: |1 2 3 4 5 6 7 8 9 10| - "; run = true;
-            }
-        }
-        --y;
+        string letter = "This letter is not permitted. Choose X from: |a b c d e f g h i j| and Y from: |1 2 3 4 5 6 7 8 9 10| - ";
+        int x, y;
+        int pos;
+
+        ship.Ship::Entry(x, y, letter, pos, 2, 3, Ar);
         Bot.Shoot(x, y);
         Player.Print();
         Bot.PrintBot();
@@ -53,8 +32,10 @@ int main(int argc, char** argv)
     return 0;
 }
 
+
 void GameBoard::Generate()
 {
+    GameBoard gameBoard;
     // заполняем игровое поле пустыми клетками
     for (int i = 0; i < _size; i++)
         for (int j = 0; j < _size; j++)
@@ -68,32 +49,31 @@ void GameBoard::Generate()
     if (nm == 0) {
         cout << "Enter x, y and position (if horizontal - 1, else - 0): X_Y_Position" << endl;
         int x, y;
-        bool pos;
-        for (int i = 0; i < _4DeckShipCount; i++) {
+        int pos;
+        string letter = "This letter is not permitted. Choose X from: |a b c d e f g h i j| and Y from: |1 2 3 4 5 6 7 8 9 10| and Position from |0(vertical) 1(horizontal)| - ";
+        int i = 0;
+        while (i < _4DeckShipCount) {
             cout << "4 deck ship (quantity " << _4DeckShipCount-i << "): ";
-            cin >> x >> y >> pos;
-            _ships[idx++].Create_hand(*this, 4, --x, --y, pos);
+            _ships[idx++].Entry(x, y, letter, pos, 3, 4, gameBoard);
             Print();
             cout << endl;
+            i++;
         }
         for (int i = 0; i < _3DeckShipCount; i++) {
             cout << "3 deck ship (quantity " << _3DeckShipCount-i << "): ";
-            cin >> x >> y >> pos;
-            _ships[idx++].Create_hand(*this, 3, --x, --y, pos);
+            _ships[idx++].Entry(x, y, letter, pos, 3, 3, gameBoard);
             Print();
             cout << endl;
         }
         for (int i = 0; i < _2DeckShipCount; i++) {
             cout << "2 deck ship (quantity " << _2DeckShipCount-i << "): ";
-            cin >> x >> y >> pos;
-            _ships[idx++].Create_hand(*this, 2, --x, --y, pos);
+            _ships[idx++].Entry(x, y, letter, pos, 3, 2, gameBoard);
             Print();
             cout << endl;
         }
         for (int i = 0; i < _1DeckShipCount; i++) {
             cout << "1 deck ship (quantity " << _1DeckShipCount-i << "): ";
-            cin >> x >> y >> pos;
-            _ships[idx++].Create_hand(*this, 1, --x, --y, pos);
+            _ships[idx++].Entry(x, y, letter, pos, 3, 1, gameBoard);
             Print();
             cout << endl;
         }

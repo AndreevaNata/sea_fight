@@ -20,6 +20,10 @@ public:
     }
     void Create_random(GameBoard& gameBoard, int size_ship, int num_ships);
     void Create_hand(GameBoard& gameBoard, int size, int x, int y, bool horizontal);
+    bool Create_ship(int x, int y, int dir, string letter, int size_ship, GameBoard& gameBoard);
+    void Entry(int &x, int &y, const string& letter, int &pos, int n, int size_ship, GameBoard& gameBoard);
+
+
     ~Ship();
 
     // функция возвращает состояние корабля, выполнив проверку целостности всех палуб
@@ -43,10 +47,10 @@ private:
     GameBoardCell _cells[_size][_size]; // клетки игрового поля
     Ship _ships[_shipsCount];   // корабли
 
+
     // функция создание игрового поля
 
 public:
-
     ~GameBoard() { }
     void Generate();
     void GenerateBot();
