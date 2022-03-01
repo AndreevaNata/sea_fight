@@ -8,8 +8,7 @@
 using namespace std;
 // заранее объявим, чтобы можно было указывать в качестве аргумент функций класса Ship
 class GameBoard;
-//r
-// ВАУ НАТАША? hghghgh
+
 const int N = 10;
 int main(int argc, char** argv)
 {   int natasha = 10;
@@ -27,7 +26,7 @@ int main(int argc, char** argv)
     bool SecondBotHit = false;
     bool BotMiss[4] = {false, false, false, false};
     int x = 0,y = 0;
-    int Botx = 0, Boty = 0;
+    int Botx = 0, Boty = 0, botx = 0,boty = 0;
     do {
         if (step == true) {
             cout << "\nYour step..." << endl;
@@ -97,7 +96,7 @@ int main(int argc, char** argv)
                 step = false;
                 Player.Print();
                 Bot.PrintBot();
-                cout << "\nYou missed!\a" << endl;}
+                cout << "\nYou missed!" << endl;}
             else  {
                 Player.Print();
                 Bot.PrintBot();
@@ -108,44 +107,48 @@ int main(int argc, char** argv)
 
             cout << "\nStep Bot...\n"<< endl;
             if (BotHit == true){
+
                 if (SecondBotHit == false){
                     while (true){
+                        Botx = botx;
+                        Boty = boty;
                         Direction = 1+rand() % 4;
-                        if (Direction == 1 && BotMiss[0] == false && Boty > 0){
+                        if (Direction == 1 && BotMiss[0] == false && Boty-1 >= 0){
                             Boty--; //Стреляет левее
+                            BotMiss[0] == true;
                             break;
                         }
-                        else if (Direction == 2 && BotMiss[1] == false && Botx> 0){
+                        else if (Direction == 2 && BotMiss[1] == false && Botx-1 >= 0){
                             Botx--; //Стреляет выше
+                            BotMiss[1] == true;
                             break;
                         }
-                        else if (Direction == 3 && BotMiss[2] == false && Boty < 9){
+                        else if (Direction == 3 && BotMiss[2] == false && Boty+1 <= 9){
                             Boty++; //Стреляет правее
+                            BotMiss[2] == true;
                             break;
                         }
-                        else if (Direction == 4 && BotMiss[3] == false && Botx < 9){
+                        else if (Direction == 4 && BotMiss[3] == false && Botx+1 <= 9){
                             Botx++; //Стреляет ниже
+                            BotMiss[3] == true;
                             break;
                         }
-                        else{
-                            BotMiss[Direction - 1] = true; //Если никуда не получилось выстрелить
-                        }
-                        if (BotMiss[0] == true && BotMiss[1] == true && BotMiss[2] == true && BotMiss[3] == true){
-                            break; //Если уже были попытки выстрелить по всем сторонам
-                        }
+
+
+
                     }
                 }
                 else{ //При втором попадании стреляет в направлении, в котором раньше стрелял
-                    if (Direction == 1 && Boty > 0){
+                    if (Direction == 1 && Boty - 1 >= 0){
                         Boty--;
                     }
-                    else if (Direction == 2 && Botx > 0){
+                    else if (Direction == 2 && Botx -1 >= 0){
                         Botx--;
                     }
-                    else if (Direction == 3 && Boty < 9){
+                    else if (Direction == 3 && Boty +1 <= 9){
                         Boty++;
                     }
-                    else if (Direction == 4 && Botx < 9){
+                    else if (Direction == 4 && Botx+1 <= 9){
                         Botx++;
                     }
                     else{
@@ -155,7 +158,9 @@ int main(int argc, char** argv)
             }
             else {
                 Botx = rand() % N;
-                Boty = rand() % N;
+                Boty =  rand() % N;
+                botx = Botx;
+                boty = Boty;
 
             }
 
@@ -166,18 +171,17 @@ int main(int argc, char** argv)
                     Player.Print();
                     Bot.PrintBot();
                     cout << "Bot entered the coordinates: x[" << Botx+1<< "] and y[" << Boty+1 << "]\n";
-                    cout << "\nBot missed!\a" << endl;
+                    cout << "\nBot missed!" << endl;
+                    SecondBotHit = false;
                 } else {
                     if (BotHit){
-                        BotHitForSecondBotHit = true;
-                    }
-                    if (BotHitForSecondBotHit){
+
                         SecondBotHit = true;
                     }
                     BotHit = true;
                     Player.Print();
                     Bot.PrintBot();
-                    cout << "Bot entered the coordinates: x[" << x+1<< "] and y[" << y+1 << "]\n";
+                    cout << "Bot entered the coordinates: x[" << Botx+1<< "] and y[" << Boty+1 << "]\n";
                     cout << "\n\t\t\t\tBot hit your ship!\a" << endl;
                 }
 

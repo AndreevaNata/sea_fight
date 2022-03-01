@@ -36,12 +36,11 @@ public:
 // функция возвращает y текущей клетки
     int GetY()
     { return _y; }
-    bool Cell(int x, int y)
-    { return x == _x && y == _y && _state != Deck; }
+
 
 // функция - проверка попадания в клетку
     bool TryHit(int x, int y)
-    { return x == _x && y == _y && _state != HitDeck; }
+    { return (x == _x && y == _y && _state != HitDeck); }
     void Print()
     {
         if (_state == Empty)

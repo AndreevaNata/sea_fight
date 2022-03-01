@@ -169,14 +169,15 @@ bool GameBoard::Shoot_function(int x, int y) {
 
     for (int i = 0; i < _shipsCount; i++)
         // проверим попадание
-        if (_ships[i].TryHit(x, y)) {
+        if (_cells[y][x].GetState() == Deck) {
             // если попадаем - стреляем по кораблю
             _ships[i].Shoot_ship(*this, x, y);
             return true;
             break;
         } else {
             // иначе засчитываем промах
-            _cells[y][x].SetState(Miss);
+
+             _cells[y][x].SetState(Miss);
             //после промаха игрока, должен появиться бот
            return false;
         }

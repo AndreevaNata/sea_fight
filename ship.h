@@ -53,7 +53,7 @@ private:
 public:
 
     ~GameBoard() { }
-    void Bot_step();
+
     void Generate();
     void GenerateBot();
     // функция установки статуса клетки игрового поля
