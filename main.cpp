@@ -175,7 +175,7 @@ int main(int argc, char** argv) {
                     system ("cls");
                     Player.Print();
                     Bot.PrintBot();
-                    cout << "Bot entered the coordinates: x[" << Botx+1<< "] and y[" << Boty+1 << "]\n";
+                   // cout << "Bot entered the coordinates: x[" << Botx+1<< "] and y[" << Boty+1 << "]\n";
                     cout << "\nBot missed!" << endl;
                     SecondBotHit = false;
                     char Botx_char;

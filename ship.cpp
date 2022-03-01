@@ -173,7 +173,7 @@ bool GameBoard::Shoot_function(int x, int y) {
 
     for (int i = 0; i < _shipsCount; i++){
         // проверим попадание
-        if (_cells[y][x].GetState() == Deck) {
+        if (_ships[i].TryHit(x, y)) {
             // если попадаем - стреляем по кораблю
             _ships[i].Shoot_ship(*this, x, y);
             return true;
