@@ -5,19 +5,13 @@
 #include "ship.h"
 #include <ctime>
 #include "bot.h"
-#include <Windows.h>
 #include <iomanip>
 #include <stdio.h>
-#include <dos.h>
 using namespace std;
 // заранее объявим, чтобы можно было указывать в качестве аргумент функций класса Ship
 class GameBoard;
 
 int main(int argc, char** argv) {
-int main(int argc, char** argv)
-{
-    HANDLE hStdout;// для очистки консоли
-    hStdout = GetStdHandle(STD_OUTPUT_HANDLE);//для очистки консоли
     srand(time(0));
     const int N = 10;
     GameBoard Player;
@@ -35,83 +29,15 @@ int main(int argc, char** argv)
     bool BotHitForSecondBotHit = false;
     bool SecondBotHit = false;
     bool BotMiss[4] = {false, false, false, false};
-    int x = 0,y = 0;
+    int x, y, pos;
     int Botx = 0, Boty = 0;
     Ship ship;
     do {
-        cout << "Enter x and y coord: X_Y: " << endl;
-        string letter = "This letter is not permitted. Choose X from: |a b c d e f g h i j| and Y from: |1 2 3 4 5 6 7 8 9 10| - ";
-        int x, y;
-        int pos;
-
-        ship.Ship::Entry(x, y, letter, pos, 2, 3, Ar);
-        Bot.Shoot(x, y);
-        Player.Print();
-        Bot.PrintBot();
-    } while (!Player.AllShipsDestroyed());
-        if (step == true) {
+        if (step) {
             cout << "\nYour step..." << endl;
-            cout << "Enter x and y coord: X_Y: " << endl;
-            char fx;
+            string letter = "Enter x and y coord: X_Y: ";
 
-            bool run = true;
-            while (run) {
-                run = false;
-                cin >> fx >> y;
-                switch (fx) {
-                    case ('a'): {
-                        x = 0;
-                        break;
-                    }
-                    case ('b'): {
-                        x = 1;
-                        break;
-                    }
-                    case ('c'): {
-                        x = 2;
-                        break;
-                    }
-                    case ('d'): {
-                        x = 3;
-                        break;
-                    }
-                    case ('e'): {
-                        x = 4;
-                        break;
-                    }
-                    case ('f'): {
-                        x = 5;
-                        break;
-                    }
-                    case ('g'): {
-                        x = 6;
-                        break;
-                    }
-                    case ('h'): {
-                        x = 7;
-                        break;
-                    }
-                    case ('i'): {
-                        x = 8;
-                        break;
-                    }
-                    case ('j'): {
-                        x = 9;
-                        break;
-                    }
-                    default: {
-                        cout
-                                << "This letter is not permitted. Choose X from: |a b c d e f g h i j| and Y from: |1 2 3 4 5 6 7 8 9 10| - ";
-                        run = true;
-                    }
-                }
-                if ((y < 1 || y > 10) && !run) {
-                    cout
-                            << "This letter is not permitted. Choose X from: |a b c d e f g h i j| and Y from: |1 2 3 4 5 6 7 8 9 10| - ";
-                    run = true;
-                }
-            }
-            --y;
+            ship.Ship::Entry(x, y, letter, pos, 2, 3, Ar);
             if (!Bot.Shoot_function(x, y)){//стреляем в поле бота
                 step = false;
                 system ("cls");
@@ -189,46 +115,16 @@ int main(int argc, char** argv)
                     Bot.PrintBot();
                     char Botx_char;
                     switch (Botx) {
-                        case (0): {
-                            Botx_char = 'a';
-                            break;
-                        }
-                        case (1): {
-                            Botx_char = 'b';
-                            break;
-                        }
-                        case (2): {
-                            Botx_char = 'c';
-                            break;
-                        }
-                        case (3): {
-                            Botx_char = 'd';
-                            break;
-                        }
-                        case (4): {
-                            Botx_char = 'e';
-                            break;
-                        }
-                        case (5): {
-                            Botx_char = 'f';
-                            break;
-                        }
-                        case (6): {
-                            Botx_char = 'g';
-                            break;
-                        }
-                        case (7): {
-                            Botx_char = 'h';
-                            break;
-                        }
-                        case (8): {
-                            Botx_char = 'i';
-                            break;
-                        }
-                        case (9): {
-                            Botx_char = 'j';
-                            break;
-                        }
+                        case (0): { Botx_char = 'a'; break; }
+                        case (1): { Botx_char = 'b'; break; }
+                        case (2): { Botx_char = 'c'; break; }
+                        case (3): { Botx_char = 'd'; break; }
+                        case (4): { Botx_char = 'e'; break; }
+                        case (5): { Botx_char = 'f'; break; }
+                        case (6): { Botx_char = 'g'; break; }
+                        case (7): { Botx_char = 'h'; break; }
+                        case (8): { Botx_char = 'i'; break; }
+                        case (9): { Botx_char = 'j'; break; }
                     }
                     cout << "Bot entered the coordinates: " << Botx_char<< " " << Boty+1 << ""
                                                                                             ""
@@ -258,8 +154,7 @@ int main(int argc, char** argv)
 }
 
 
-void GameBoard::Generate()
-{
+void GameBoard::Generate() {
     GameBoard gameBoard;
     // заполняем игровое поле пустыми клетками
     for (int i = 0; i < _size; i++)
