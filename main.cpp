@@ -5,15 +5,20 @@
 #include "ship.h"
 #include <ctime>
 #include "bot.h"
+#include <Windows.h>
+#include <iomanip>
+#include <stdio.h>
+#include <dos.h>
 using namespace std;
 // заранее объявим, чтобы можно было указывать в качестве аргумент функций класса Ship
 class GameBoard;
-//r
-// ВАУ НАТАША? hghghgh
-const int N = 10;
+
 int main(int argc, char** argv)
-{   int natasha = 10;
+{
+    HANDLE hStdout;// для очистки консоли
+    hStdout = GetStdHandle(STD_OUTPUT_HANDLE);//для очистки консоли
     srand(time(0));
+    const int N = 10;
     GameBoard Player;
     GameBoard Bot;
     Player.Generate();
@@ -21,6 +26,8 @@ int main(int argc, char** argv)
     Bot.GenerateBot();
     Bot.PrintBot();
     int Direction = -1;
+
+
     bool step = true;
     bool BotHit = false;
     bool BotHitForSecondBotHit = false;
@@ -92,13 +99,14 @@ int main(int argc, char** argv)
                 }
             }
             --y;
-
             if (!Bot.Shoot_function(x, y)){//стреляем в поле бота
                 step = false;
+                system ("cls");
                 Player.Print();
                 Bot.PrintBot();
                 cout << "\nYou missed!\a" << endl;}
             else  {
+                system ("cls");
                 Player.Print();
                 Bot.PrintBot();
                 cout << "\nYou hit bot's ship\a" << endl;
@@ -163,9 +171,55 @@ int main(int argc, char** argv)
                // cout << "Bot entered the coordinates: x[" << x+1<< "] and y[" << y+1 << "]\n";
                 if (!(Player.Shoot_function(Botx, Boty))) {
                     step = true;
+                    system ("cls");
                     Player.Print();
                     Bot.PrintBot();
-                    cout << "Bot entered the coordinates: x[" << Botx+1<< "] and y[" << Boty+1 << "]\n";
+                    char Botx_char;
+                    switch (Botx) {
+                        case (0): {
+                            Botx_char = 'a';
+                            break;
+                        }
+                        case (1): {
+                            Botx_char = 'b';
+                            break;
+                        }
+                        case (2): {
+                            Botx_char = 'c';
+                            break;
+                        }
+                        case (3): {
+                            Botx_char = 'd';
+                            break;
+                        }
+                        case (4): {
+                            Botx_char = 'e';
+                            break;
+                        }
+                        case (5): {
+                            Botx_char = 'f';
+                            break;
+                        }
+                        case (6): {
+                            Botx_char = 'g';
+                            break;
+                        }
+                        case (7): {
+                            Botx_char = 'h';
+                            break;
+                        }
+                        case (8): {
+                            Botx_char = 'i';
+                            break;
+                        }
+                        case (9): {
+                            Botx_char = 'j';
+                            break;
+                        }
+                    }
+                    cout << "Bot entered the coordinates: " << Botx_char<< " " << Boty+1 << ""
+                                                                                            ""
+                                                                                            "\n";
                     cout << "\nBot missed!\a" << endl;
                 } else {
                     if (BotHit){
@@ -174,7 +228,10 @@ int main(int argc, char** argv)
                     if (BotHitForSecondBotHit){
                         SecondBotHit = true;
                     }
+                    system ("cls");
                     BotHit = true;
+                    system ("cls");
+
                     Player.Print();
                     Bot.PrintBot();
                     cout << "Bot entered the coordinates: x[" << x+1<< "] and y[" << y+1 << "]\n";
@@ -274,6 +331,7 @@ void GameBoard::GenerateBot()
 
 void GameBoard::Print()
 {
+
     cout<< "Player's bord"<<endl;
     cout << ' ' << ' ' << ' ';
     cout << 'a' << ' ';

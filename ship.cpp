@@ -1,5 +1,6 @@
 #include "ship.h"
 #include "bot.h"
+#include <windows.h>
 const int N = 10;
 class GameBoard;
 void Ship::Create_random(GameBoard& gameBoard, int size_ship, int num_ships)
@@ -167,7 +168,7 @@ void Ship::Shoot_ship(GameBoard& gameBoard, int x, int y)
 bool GameBoard::Shoot_function(int x, int y) {
     // просмотрим все корабли
 
-    for (int i = 0; i < _shipsCount; i++)
+    for (int i = 0; i < _shipsCount; i++){
         // проверим попадание
         if (_ships[i].TryHit(x, y)) {
             // если попадаем - стреляем по кораблю
@@ -180,6 +181,7 @@ bool GameBoard::Shoot_function(int x, int y) {
             //после промаха игрока, должен появиться бот
            return false;
         }
+    }
 }
 
 bool GameBoard::AllShipsDestroyed()
@@ -198,4 +200,40 @@ Ship::~Ship()
     // очистим память, если она была выделена.
     if (_size)
         delete _cells;
+}
+void GameBoard::cls(HANDLE hConsole)
+{
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    SMALL_RECT scrollRect;
+    COORD scrollTarget;
+    CHAR_INFO fill;
+
+    // Get the number of character cells in the current buffer.
+    if (!GetConsoleScreenBufferInfo(hConsole, &csbi))
+    {
+        return;
+    }
+
+    // Scroll the rectangle of the entire buffer.
+    scrollRect.Left = 0;
+    scrollRect.Top = 0;
+    scrollRect.Right = csbi.dwSize.X;
+    scrollRect.Bottom = csbi.dwSize.Y;
+
+    // Scroll it upwards off the top of the buffer with a magnitude of the entire height.
+    scrollTarget.X = 0;
+    scrollTarget.Y = (SHORT)(0 - csbi.dwSize.Y);
+
+    // Fill with empty spaces with the buffer's default text attribute.
+    fill.Char.UnicodeChar = TEXT(' ');
+    fill.Attributes = csbi.wAttributes;
+
+    // Do the scroll
+    ScrollConsoleScreenBuffer(hConsole, &scrollRect, NULL, scrollTarget, &fill);
+
+    // Move the cursor to the top left corner too.
+    csbi.dwCursorPosition.X = 0;
+    csbi.dwCursorPosition.Y = 0;
+
+    SetConsoleCursorPosition(hConsole, csbi.dwCursorPosition);
 }

@@ -1,6 +1,7 @@
 #include <iostream>
 #include "emun.h"
 #include "cell_method.h"
+#include <windows.h>
 
 // класс - корабль
 #ifndef UNTITLED12_SHIP_H
@@ -74,7 +75,7 @@ public:
     // функция печати игрового поля
     void Print();
     void PrintBot();
-
+    void cls(HANDLE hConsole);
     // функция возвращает число клеток игровой области
     int GetCount()
     { return _size * _size; }
