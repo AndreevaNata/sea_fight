@@ -41,6 +41,7 @@ public:
 // функция - проверка попадания в клетку
     bool TryHit(int x, int y)
     { return (x == _x && y == _y && _state != HitDeck); }
+
     void Print()
     {
         if (_state == Empty)

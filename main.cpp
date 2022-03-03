@@ -99,31 +99,35 @@ int main(int argc, char** argv) {
                 }
             }
             --y;
-
-            if (!Bot.Shoot_function(x, y)){//стреляем в поле бота
+int check = Bot.Shoot_function( Bot, x, y);
+            if (check == 0){//стреляем в поле бота
                 step = false;
                 //system ("cls");
                 Player.Print();
                 Bot.PrintBot();
                 cout << "\nYou missed!" << endl;}
-            else  {
+            else if (check == 1)  {
                 //system ("cls");
                 Player.Print();
                 Bot.PrintBot();
                 cout << "\nYou hit bot's ship\a" << endl;
             }
+            else if (check == 2)  {
+                cout<<"ERROR";
+                cout<<" You already was in this cell"<<endl;
+            }
 
         } else {
 
             cout << "\nStep Bot...\n"<< endl;
-            if (BotHit == true){
+            if (BotHit){
 
-                if (SecondBotHit == false){
+                if (!SecondBotHit){
                     while (true){
                         Botx = botx;
                         Boty = boty;
                         Direction = 1+rand() % 4;
-                        if (Direction == 1 && BotMiss[0] == false && Boty-1 >= 0){
+                        if (Direction == 1 && !BotMiss[0] && Boty - 1 >= 0){
                             Boty--; //Стреляет левее
                             BotMiss[0] = true;
                             break;
@@ -188,7 +192,8 @@ int main(int argc, char** argv) {
                 case (9): { Botx_char = 'j'; break; }
             }
                // cout << "Bot entered the coordinates: x[" << x+1<< "] and y[" << y+1 << "]\n";
-                if (!(Player.Shoot_function(Botx, Boty))) {
+               int check = Player.Shoot_function( Player,Botx, Boty);
+                if (check ==0) {
                     step = true;
                     //system ("cls");
                     Player.Print();
@@ -198,7 +203,7 @@ int main(int argc, char** argv) {
 
                     cout << "Bot entered the coordinates: " << Botx_char<< " " << Boty+1;
                     cout << "\nBot missed!\a" << endl;
-                } else {
+                } else if (check ==1) {
                     if (BotHit){
 
                         SecondBotHit = true;
@@ -209,8 +214,12 @@ int main(int argc, char** argv) {
 
                     Player.Print();
                     Bot.PrintBot();
-                    cout << "Bot entered the coordinates: x[" << Botx_char<< "] and y[" << Boty+1 << "]\n";
+                    cout << "Bot entered the coordinates: " << Botx_char<< " " << Boty+1;
                     cout << "\n\t\t\t\tBot hit your ship!\a" << endl;
+                }
+                else if (check==2){
+                    cout<<"ERROR";
+                    cout<<" You already was in this cell"<<endl;
                 }
 
 
@@ -367,6 +376,7 @@ void GameBoard::PrintBot() {
             _cells[i][j].PrintBot();
             cout << "|";
         }
+
         cout << endl;
     }
 }

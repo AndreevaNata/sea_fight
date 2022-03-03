@@ -168,7 +168,7 @@ void Ship::Shoot_ship(GameBoard& gameBoard, int x, int y)
         }
     }
 }
-bool GameBoard::Shoot_function(int x, int y) {
+int GameBoard::Shoot_function(GameBoard& gameBoard, int x, int y) {
     // просмотрим все корабли
     int flag = 0;
     for (int i = 0; i < _shipsCount; i++) {
@@ -179,10 +179,15 @@ bool GameBoard::Shoot_function(int x, int y) {
            flag = 1;
             break;
         }
-}
 
-    if (flag == 0){    _cells[y][x].SetState(Miss);return false;}
-    else return true;
+}
+    if (flag == 1) return 1;
+    else if (gameBoard.GetState(x,y) == Empty){  _cells[y][x].SetState(Miss);return 0;}
+    else if ( gameBoard.GetState(x,y) == HitDeck ||   gameBoard.GetState(x,y) == Miss) return 2;
+
+
+
+
 }
 
 bool GameBoard::AllShipsDestroyed()

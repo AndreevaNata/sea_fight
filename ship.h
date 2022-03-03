@@ -63,6 +63,12 @@ public:
     void SetState(int x, int y, CellState state)
     { _cells[y][x].SetState(state); }
 
+    bool GETstate(int x,int y){
+        if (_cells[y][x].GetState() == Miss) return true;
+        else return false;
+    }
+
+
     CellState GetState(int x, int y)
     { if (x >= 0 && y >= 0 && x < _size && y < _size)
             return _cells[y][x].GetState();
@@ -87,7 +93,7 @@ public:
     { return _size; }
 
     // функция - выстрел в игровое поле
-    bool Shoot_function(int x, int y);
+    int Shoot_function(GameBoard& gameBoard,int x, int y);
 
     // функция проверки - уничтожены ли все корабли на поле
     bool AllShipsDestroyed();
