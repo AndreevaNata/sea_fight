@@ -3,14 +3,14 @@
 #include <windows.h>
 const int N = 10;
 class GameBoard;
-void Ship::Create_random(GameBoard& gameBoard, int size_ship, int num_ships)
+void Ship::Create_random(GameBoard& gameBoard, int size_ship)
 {
     _size = size_ship;
     // заполняем клетки в зависимости от начала координат корабля и его направления
     int x, y;
     int dir;
     int count_ship = 0;
-    while (count_ship < num_ships) {
+    while (count_ship != 1) {
         x = rand() % N;
         y = rand() % N;
 
@@ -170,22 +170,19 @@ void Ship::Shoot_ship(GameBoard& gameBoard, int x, int y)
 }
 bool GameBoard::Shoot_function(int x, int y) {
     // просмотрим все корабли
-
-    for (int i = 0; i < _shipsCount; i++){
+    int flag = 0;
+    for (int i = 0; i < _shipsCount; i++) {
         // проверим попадание
         if (_ships[i].TryHit(x, y)) {
             // если попадаем - стреляем по кораблю
             _ships[i].Shoot_ship(*this, x, y);
-            return true;
+           flag = 1;
             break;
-        } else {
-            // иначе засчитываем промах
-
-             _cells[y][x].SetState(Miss);
-            //после промаха игрока, должен появиться бот
-           return false;
         }
-    }
+}
+
+    if (flag == 0){    _cells[y][x].SetState(Miss);return false;}
+    else return true;
 }
 
 bool GameBoard::AllShipsDestroyed()

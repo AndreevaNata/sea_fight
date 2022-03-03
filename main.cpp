@@ -10,21 +10,27 @@
 using namespace std;
 // заранее объявим, чтобы можно было указывать в качестве аргумент функций класса Ship
 class GameBoard;
-
+//void PRint(GameBoard & P, GameBoard & B){
+//    P.Print();
+//
+//    B.PrintBot();
+//}
 int main(int argc, char** argv) {
     srand(time(0));
     const int N = 10;
     GameBoard Player;
     GameBoard Bot;
-    GameBoard Ar;
+
     Player.Generate();
     Player.Print();
     Bot.GenerateBot();
+
     Bot.PrintBot();
+  //  PRint( Player, Bot);
     int Direction = -1;
     bool step = true;
     bool BotHit = false;
-    bool BotHitForSecondBotHit = false;
+
     bool SecondBotHit = false;
     bool BotMiss[4] = {false, false, false, false};
     int x = 0,y = 0;
@@ -96,12 +102,12 @@ int main(int argc, char** argv) {
 
             if (!Bot.Shoot_function(x, y)){//стреляем в поле бота
                 step = false;
-                system ("cls");
+                //system ("cls");
                 Player.Print();
                 Bot.PrintBot();
                 cout << "\nYou missed!" << endl;}
             else  {
-                system ("cls");
+                //system ("cls");
                 Player.Print();
                 Bot.PrintBot();
                 cout << "\nYou hit bot's ship\a" << endl;
@@ -119,22 +125,22 @@ int main(int argc, char** argv) {
                         Direction = 1+rand() % 4;
                         if (Direction == 1 && BotMiss[0] == false && Boty-1 >= 0){
                             Boty--; //Стреляет левее
-                            BotMiss[0] == true;
+                            BotMiss[0] = true;
                             break;
                         }
                         else if (Direction == 2 && BotMiss[1] == false && Botx-1 >= 0){
                             Botx--; //Стреляет выше
-                            BotMiss[1] == true;
+                            BotMiss[1] = true;
                             break;
                         }
                         else if (Direction == 3 && BotMiss[2] == false && Boty+1 <= 9){
                             Boty++; //Стреляет правее
-                            BotMiss[2] == true;
+                            BotMiss[2] = true;
                             break;
                         }
                         else if (Direction == 4 && BotMiss[3] == false && Botx+1 <= 9){
                             Botx++; //Стреляет ниже
-                            BotMiss[3] == true;
+                            BotMiss[3] = true;
                             break;
                         }
 
@@ -168,45 +174,42 @@ int main(int argc, char** argv) {
 
             }
 
-
+            char Botx_char;
+            switch (Botx) {
+                case (0): { Botx_char = 'a'; break; }
+                case (1): { Botx_char = 'b'; break; }
+                case (2): { Botx_char = 'c'; break; }
+                case (3): { Botx_char = 'd'; break; }
+                case (4): { Botx_char = 'e'; break; }
+                case (5): { Botx_char = 'f'; break; }
+                case (6): { Botx_char = 'g'; break; }
+                case (7): { Botx_char = 'h'; break; }
+                case (8): { Botx_char = 'i'; break; }
+                case (9): { Botx_char = 'j'; break; }
+            }
                // cout << "Bot entered the coordinates: x[" << x+1<< "] and y[" << y+1 << "]\n";
                 if (!(Player.Shoot_function(Botx, Boty))) {
                     step = true;
-                    system ("cls");
+                    //system ("cls");
                     Player.Print();
                     Bot.PrintBot();
                    // cout << "Bot entered the coordinates: x[" << Botx+1<< "] and y[" << Boty+1 << "]\n";
-                    cout << "\nBot missed!" << endl;
                     SecondBotHit = false;
-                    char Botx_char;
-                    switch (Botx) {
-                        case (0): { Botx_char = 'a'; break; }
-                        case (1): { Botx_char = 'b'; break; }
-                        case (2): { Botx_char = 'c'; break; }
-                        case (3): { Botx_char = 'd'; break; }
-                        case (4): { Botx_char = 'e'; break; }
-                        case (5): { Botx_char = 'f'; break; }
-                        case (6): { Botx_char = 'g'; break; }
-                        case (7): { Botx_char = 'h'; break; }
-                        case (8): { Botx_char = 'i'; break; }
-                        case (9): { Botx_char = 'j'; break; }
-                    }
-                    cout << "Bot entered the coordinates: " << Botx_char<< " " << Boty+1 << ""
-                                                                                            ""
-                                                                                            "\n";
+
+                    cout << "Bot entered the coordinates: " << Botx_char<< " " << Boty+1;
                     cout << "\nBot missed!\a" << endl;
                 } else {
                     if (BotHit){
 
                         SecondBotHit = true;
                     }
-                    system ("cls");
+                    //system ("cls");
                     BotHit = true;
-                    system ("cls");
+                    //system ("cls");
 
                     Player.Print();
                     Bot.PrintBot();
-                    cout << "Bot entered the coordinates: x[" << Botx+1<< "] and y[" << Boty+1 << "]\n";
+                    cout << "Bot entered the coordinates: x[" << Botx_char<< "] and y[" << Boty+1 << "]\n";
                     cout << "\n\t\t\t\tBot hit your ship!\a" << endl;
                 }
 
@@ -218,7 +221,7 @@ int main(int argc, char** argv) {
 
 
 void GameBoard::Generate() {
-    GameBoard gameBoard;
+
     // заполняем игровое поле пустыми клетками
     for (int i = 0; i < _size; i++)
         for (int j = 0; j < _size; j++)
@@ -237,26 +240,26 @@ void GameBoard::Generate() {
         int i = 0;
         while (i < _4DeckShipCount) {
             cout << "4 deck ship (quantity " << _4DeckShipCount-i << "): ";
-            _ships[idx++].Entry(x, y, letter, pos, 3, 4, gameBoard);
+            _ships[idx++].Entry(x, y, letter, pos, 3, 4, *this);
             Print();
             cout << endl;
             i++;
         }
         for (int i = 0; i < _3DeckShipCount; i++) {
             cout << "3 deck ship (quantity " << _3DeckShipCount-i << "): ";
-            _ships[idx++].Entry(x, y, letter, pos, 3, 3, gameBoard);
+            _ships[idx++].Entry(x, y, letter, pos, 3, 3, *this);
             Print();
             cout << endl;
         }
         for (int i = 0; i < _2DeckShipCount; i++) {
             cout << "2 deck ship (quantity " << _2DeckShipCount-i << "): ";
-            _ships[idx++].Entry(x, y, letter, pos, 3, 2, gameBoard);
+            _ships[idx++].Entry(x, y, letter, pos, 3, 2, *this);
             Print();
             cout << endl;
         }
         for (int i = 0; i < _1DeckShipCount; i++) {
             cout << "1 deck ship (quantity " << _1DeckShipCount-i << "): ";
-            _ships[idx++].Entry(x, y, letter, pos, 3, 1, gameBoard);
+            _ships[idx++].Entry(x, y, letter, pos, 3, 1, *this);
             Print();
             cout << endl;
         }
@@ -264,19 +267,21 @@ void GameBoard::Generate() {
     }
     else{
         // заполняем игровое поле пустыми клетками
-        for (int i = 0; i < _size; i++)
-            for (int j = 0; j < _size; j++)
-                _cells[i][j].SetState(Empty);
-        // расставяем 4-х палубные
-        _ships[idx++].Create_random(*this, 4, 1);
-        // расставяем 3-х палубные
-        _ships[idx++].Create_random(*this, 3, 2);
 
-        // расставяем 2-х палубные
-        _ships[idx++].Create_random(*this, 2, 3);
+        _ships[idx++].Create_random(*this, 4);
+        // расставляем 3-х палубные
+        _ships[idx++].Create_random(*this, 3);
+        _ships[idx++].Create_random(*this, 3);
+        // расставляем 2-х палубные
+        _ships[idx++].Create_random(*this, 2);
+        _ships[idx++].Create_random(*this, 2);
+        _ships[idx++].Create_random(*this, 2);
 
-        // расставяем 1-х палубные
-        _ships[idx++].Create_random(*this, 1, 4);
+        // расставляем 1-х палубные
+        _ships[idx++].Create_random(*this, 1);
+        _ships[idx++].Create_random(*this, 1);
+        _ships[idx++].Create_random(*this, 1);
+        _ships[idx++].Create_random(*this, 1);
     }
 
 }
@@ -289,15 +294,20 @@ void GameBoard::GenerateBot()
         for (int j = 0; j < _size; j++)
             _cells[i][j].SetState(Empty);
     // расставляем 4-х палубные
-    _ships[idx++].Create_random(*this, 4, 1);
+    _ships[idx++].Create_random(*this, 4);
     // расставляем 3-х палубные
-    _ships[idx++].Create_random(*this, 3, 2);
-
+    _ships[idx++].Create_random(*this, 3);
+    _ships[idx++].Create_random(*this, 3);
     // расставляем 2-х палубные
-    _ships[idx++].Create_random(*this, 2, 3);
+    _ships[idx++].Create_random(*this, 2);
+    _ships[idx++].Create_random(*this, 2);
+    _ships[idx++].Create_random(*this, 2);
 
     // расставляем 1-х палубные
-    _ships[idx++].Create_random(*this, 1, 4);
+    _ships[idx++].Create_random(*this, 1);
+    _ships[idx++].Create_random(*this, 1);
+    _ships[idx++].Create_random(*this, 1);
+    _ships[idx++].Create_random(*this, 1);
 }
 
 

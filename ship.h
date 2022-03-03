@@ -19,7 +19,7 @@ public:
         _cells = NULL;
         _size = 0;
     }
-    void Create_random(GameBoard& gameBoard, int size_ship, int num_ships);
+    void Create_random(GameBoard& gameBoard, int size_ship);
     void Create_hand(GameBoard& gameBoard, int size, int x, int y, bool horizontal);
     bool Create_ship(int x, int y, int dir, string letter, int size_ship, GameBoard& gameBoard);
     void Entry(int &x, int &y, const string& letter, int &pos, int n, int size_ship, GameBoard& gameBoard);
@@ -47,20 +47,18 @@ private:
     static const int _shipsCount = _4DeckShipCount + _3DeckShipCount + _2DeckShipCount + _1DeckShipCount;   // число кораблей
     GameBoardCell _cells[_size][_size]; // клетки игрового поля
     Ship _ships[_shipsCount];   // корабли
-    bool BotHit = false;
-    bool BotHitForSecondBotHit = false;
-    bool SecondBotHit = false;
-    bool BotMiss[4] = {false, false, false, false}; //Попадание бота по четырём сторонам
-
 
 
     // функция создание игрового поля
 
 public:
-    ~GameBoard() { }
 
     void Generate();
     void GenerateBot();
+
+    ~GameBoard() { }
+
+
     // функция установки статуса клетки игрового поля
     void SetState(int x, int y, CellState state)
     { _cells[y][x].SetState(state); }
@@ -93,7 +91,9 @@ public:
 
     // функция проверки - уничтожены ли все корабли на поле
     bool AllShipsDestroyed();
+
 };
+
 
 
 #endif //UNTITLED12_SHIP_H
