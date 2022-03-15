@@ -1,6 +1,7 @@
 // класс - клетка игрового поля
 #include <iostream>
 #include "emun.h"
+#include <windows.h>
 #ifndef UNTITLED12_CELL_H
 #define UNTITLED12_CELL_H
 using namespace std;
@@ -36,7 +37,25 @@ public:
 // функция возвращает y текущей клетки
     int GetY()
     { return _y; }
+//функция для цвета попадания
 
+    void SetColor(int text){
+        if (text == 4)
+        {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
+        }
+        else{
+            HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+            SetConsoleTextAttribute(hStdOut, (WORD)((text)));
+        }
+
+    }
+
+    template<int txt = 7>
+    std::ostream& color(ostream &text) {
+        SetColor(txt);
+        return text;
+    }
 
 // функция - проверка попадания в клетку
     bool TryHit(int x, int y)
@@ -46,10 +65,19 @@ public:
     {
         if (_state == Empty)
             cout << ' ';
-        else if (_state == HitDeck)
-            cout << 'x';
-        else if (_state == Deck)
+        else if (_state == HitDeck){
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
+            std::cout<<'x';
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
+           //std::cout<< color('x',4) <<'x'<<std::color;
+        }
+
+        else if (_state == Deck){
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_GREEN);
             cout << 'd';
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
+        }
+
         else
             cout << '*';
     }
@@ -58,8 +86,13 @@ public:
     {
         if (_state == Empty)
             cout << ' ';
-        else if (_state == HitDeck)
-            cout << 'x';
+        else if (_state == HitDeck){
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
+            std::cout<<'x';
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
+
+        }
+
         else if (_state == Deck)
             cout << ' ';
         else
