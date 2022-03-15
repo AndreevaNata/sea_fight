@@ -1,5 +1,6 @@
 #include "ship.h"
 #include "bot.h"
+#include <list>
 const int N = 10;
 class GameBoard;
 void Ship::Create_random(GameBoard& gameBoard, int size_ship)
@@ -112,14 +113,16 @@ ShipState Ship::GetState()
     return _state;
 }
 
-void Ship::Shoot_ship(GameBoard& gameBoard, int x, int y)
+bool Ship::Shoot_ship(GameBoard& gameBoard, int x, int y)
 {
     for (int i = 0; i < _size; i++)
         if (_cells[i].TryHit(x, y))
         {
             _cells[i].SetState(HitDeck);
             gameBoard.SetState(x, y, HitDeck);
-            break;
+
+
+
         }
     if (GetState() == Destroyed)
     {
@@ -146,7 +149,10 @@ void Ship::Shoot_ship(GameBoard& gameBoard, int x, int y)
             if (localX + 1 < gameBoard.GetSize() && localY + 1 < gameBoard.GetSize() && !gameBoard.IsDeck(localX + 1, localY + 1))
                 gameBoard.SetState(localX + 1, _cells[i].GetY() + 1, Miss);
         }
+        return true;
     }
+    return false;
+
 }
 int GameBoard::Shoot_function(GameBoard& gameBoard, int x, int y) {
     // просмотрим все корабли
@@ -155,13 +161,15 @@ int GameBoard::Shoot_function(GameBoard& gameBoard, int x, int y) {
         // проверим попадание
         if (_ships[i].TryHit(x, y)) {
             // если попадаем - стреляем по кораблю
-            _ships[i].Shoot_ship(*this, x, y);
-           flag = 1;
+            if(!_ships[i].Shoot_ship(*this, x, y))
+                flag = 1;
+            else flag = 2;
             break;
         }
 
 }
     if (flag == 1) return 1;
+    else if (flag == 2) return 3;
     else if (gameBoard.GetState(x,y) == Empty){  _cells[y][x].SetState(Miss);return 0;}
     else return 2;
 
@@ -172,13 +180,32 @@ int GameBoard::Shoot_function(GameBoard& gameBoard, int x, int y) {
 
 bool GameBoard::AllShipsDestroyed()
 {
+
     // обход всех кораблей
     for (int i = 0; i < _shipsCount; i++)
         // если хотя бы один не уничтожен, вернем false
-        if (_ships[i].GetState() != Destroyed)
+        if (_ships[i].GetState() != Destroyed) {
+
             return false;
+        }
     return true;    // иначе true
 }
+
+list<int> GameBoard::ShipsDestroyed()
+{
+    list<int> list;
+    // обход всех кораблей
+    for (int i = 0; i < _shipsCount; i++)
+        // если хотя бы один не уничтожен, вернем false
+        if (_ships[i].GetState() != Destroyed) {
+            list.push_back(i);
+
+        }
+    return list;    // иначе true
+}
+
+
+
 
 void Ship::Entry(int &x, int &y, const string& letter, int pos, int n, int size_ship, GameBoard& gameBoard) {
     Ship ship;

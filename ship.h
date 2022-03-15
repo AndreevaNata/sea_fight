@@ -1,7 +1,7 @@
 #include <iostream>
 #include "emun.h"
 #include "cell_method.h"
-
+#include <list>
 // класс - корабль
 #ifndef UNTITLED12_SHIP_H
 #define UNTITLED12_SHIP_H
@@ -30,7 +30,7 @@ public:
     ShipState GetState();
 
     // функция выстрела по кораблю, возвращает состояние корабля, после выстрела
-    void Shoot_ship(GameBoard& gameBoard, int x, int y);
+    bool Shoot_ship(GameBoard& gameBoard, int x, int y);
 
     bool TryHit(int x, int y);
 };
@@ -90,6 +90,9 @@ public:
 
     // функция проверки - уничтожены ли все корабли на поле
     bool AllShipsDestroyed();
+    list<int> ShipsDestroyed();
+
+    static void Remain(list<int>list);
 
 };
 

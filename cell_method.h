@@ -61,7 +61,7 @@ public:
         else if (_state == HitDeck)
             cout << 'x';
         else if (_state == Deck)
-            cout << ' ';
+            cout << 'd';
         else
             cout << '*';
     }

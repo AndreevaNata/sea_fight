@@ -5,12 +5,13 @@
 #include "ship.h"
 #include <ctime>
 #include "bot.h"
+#include <list>
 
 
 using namespace std;
 // заранее объявим, чтобы можно было указывать в качестве аргумент функций класса Ship
 class GameBoard;
-int main(int argc, char** argv) {
+int main() {
     srand(time(0));
     const int N = 10;
     GameBoard Player;
@@ -41,18 +42,25 @@ int main(int argc, char** argv) {
             if (check == 0){//стреляем в поле бота
                 step = false;
                 //system ("cls");
-                Player.Print();
+
                 Bot.PrintBot();
                 cout << "\nYou missed!" << endl;}
             else if (check == 1)  {
                 //system ("cls");
-                Player.Print();
+
                 Bot.PrintBot();
                 cout << "\nYou hit bot's ship\a" << endl;
             }
             else if (check == 2)  {
                 cout<<"ERROR";
                 cout<<" You already was in this cell"<<endl;
+            }
+            else if (check == 3){
+                cout<<"You kill Bot's ship";
+                list<int> list;
+                list = Bot.ShipsDestroyed();
+                Bot.Remain(list);
+
             }
 
         } else {
@@ -134,8 +142,9 @@ int main(int argc, char** argv) {
                 if (check ==0) {
                     step = true;
                     //system ("cls");
+
                     Player.Print();
-                    Bot.PrintBot();
+
                    // cout << "Bot entered the coordinates: x[" << Botx+1<< "] and y[" << Boty+1 << "]\n";
                     SecondBotHit = false;
 
@@ -151,15 +160,26 @@ int main(int argc, char** argv) {
                     //system ("cls");
 
                     Player.Print();
-                    Bot.PrintBot();
+
                     cout << "Bot entered the coordinates: " << Botx_char<< " " << Boty+1;
-                    cout << "\n\t\t\t\tBot hit your ship!\a" << endl;
+                    cout << "\nBot hit your ship!\a" << endl;
+                }
+                else if (check == 3){
+                    cout<<"Bot kill your ship"<<endl;
+                     BotHit= false;
+                        list<int> list;
+                        list = Player.ShipsDestroyed();
+                        Player.Remain(list);
+
+                    }
+
                 }
 
 
 
-    }
-    } while (!Player.AllShipsDestroyed() || !Bot.AllShipsDestroyed());
+    }while (!Player.AllShipsDestroyed() || !Bot.AllShipsDestroyed());
+  if(Player.AllShipsDestroyed()) cout<<"Bot win!";
+  else cout<<"You win!";
     return 0;
 }
 
@@ -253,7 +273,34 @@ void GameBoard::GenerateBot()
     _ships[idx++].Create_random(*this, 1);
     _ships[idx++].Create_random(*this, 1);
 }
+void GameBoard::Remain(list<int>list)
+{
+    int onesheep=0,twosheep=0,threesheep=0,foursheep=0;
+    while(list.size() != 0) {
 
+        switch (list.front()) {
+            case (0): { foursheep++; break; }
+            case (1): { threesheep++; break;}
+            case (2): { threesheep++; break;}
+            case (3): { twosheep++; break; }
+            case (4): { twosheep++; break; }
+            case (5): { twosheep++; break; }
+            case (6): { onesheep++; break; }
+            case (7): { onesheep++; break; }
+            case (8): { onesheep++; break; }
+            case (9): { onesheep++; break; }
+        }
+        list.pop_front();
+    }
+    cout<<endl;
+    cout<<"The remaining sheeps"<<endl;
+    cout<<endl;
+    cout<<"Four deck:1/"<<foursheep<<endl;
+    cout<<"Three deck:2/"<<threesheep<<endl;
+    cout<<"Two deck:3/"<<twosheep<<endl;
+    cout<<"One deck:4/"<<onesheep<<endl;
+
+}
 
 void GameBoard::Print()
 {
