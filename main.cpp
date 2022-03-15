@@ -277,6 +277,7 @@ void GameBoard::Remain(list<int>list)
 {
     int onesheep=0,twosheep=0,threesheep=0,foursheep=0;
     while(list.size() != 0) {
+        //sa;
 
         switch (list.front()) {
             case (0): { foursheep++; break; }
