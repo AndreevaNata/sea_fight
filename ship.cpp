@@ -180,7 +180,7 @@ int GameBoard::Shoot_function(GameBoard& gameBoard, int x, int y) {
 
 bool GameBoard::AllShipsDestroyed()
 {
-
+//aaa;
     // обход всех кораблей
     for (int i = 0; i < _shipsCount; i++)
         // если хотя бы один не уничтожен, вернем false
