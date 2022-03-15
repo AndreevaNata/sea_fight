@@ -5,16 +5,11 @@
 #include "ship.h"
 #include <ctime>
 #include "bot.h"
-#include <iomanip>
-#include <stdio.h>
+
+
 using namespace std;
 // заранее объявим, чтобы можно было указывать в качестве аргумент функций класса Ship
 class GameBoard;
-//void PRint(GameBoard & P, GameBoard & B){
-//    P.Print();
-//
-//    B.PrintBot();
-//}
 int main(int argc, char** argv) {
     srand(time(0));
     const int N = 10;
@@ -26,7 +21,6 @@ int main(int argc, char** argv) {
     Bot.GenerateBot();
 
     Bot.PrintBot();
-  //  PRint( Player, Bot);
     int Direction = -1;
     bool step = true;
     bool BotHit = false;
@@ -36,7 +30,7 @@ int main(int argc, char** argv) {
     int x = 0,y = 0;
     int Botx = 0, Boty = 0, botx = 0,boty = 0;
     do {
-        if (step == true) {
+        if (step) {
             cout << "\nYour step..." << endl;
             cout << "Enter x and y coord: X_Y: " << endl;
             char fx;
@@ -132,17 +126,17 @@ int check = Bot.Shoot_function( Bot, x, y);
                             BotMiss[0] = true;
                             break;
                         }
-                        else if (Direction == 2 && BotMiss[1] == false && Botx-1 >= 0){
+                        else if (Direction == 2 && !BotMiss[1] && Botx - 1 >= 0){
                             Botx--; //Стреляет выше
                             BotMiss[1] = true;
                             break;
                         }
-                        else if (Direction == 3 && BotMiss[2] == false && Boty+1 <= 9){
+                        else if (Direction == 3 && !BotMiss[2] && Boty + 1 <= 9){
                             Boty++; //Стреляет правее
                             BotMiss[2] = true;
                             break;
                         }
-                        else if (Direction == 4 && BotMiss[3] == false && Botx+1 <= 9){
+                        else if (Direction == 4 && !BotMiss[3] && Botx + 1 <= 9){
                             Botx++; //Стреляет ниже
                             BotMiss[3] = true;
                             break;
@@ -217,10 +211,7 @@ int check = Bot.Shoot_function( Bot, x, y);
                     cout << "Bot entered the coordinates: " << Botx_char<< " " << Boty+1;
                     cout << "\n\t\t\t\tBot hit your ship!\a" << endl;
                 }
-                else if (check==2){
-                    cout<<"ERROR";
-                    cout<<" You already was in this cell"<<endl;
-                }
+
 
 
     }
@@ -254,19 +245,19 @@ void GameBoard::Generate() {
             cout << endl;
             i++;
         }
-        for (int i = 0; i < _3DeckShipCount; i++) {
+        for ( i = 0; i < _3DeckShipCount; i++) {
             cout << "3 deck ship (quantity " << _3DeckShipCount-i << "): ";
             _ships[idx++].Entry(x, y, letter, pos, 3, 3, *this);
             Print();
             cout << endl;
         }
-        for (int i = 0; i < _2DeckShipCount; i++) {
+        for (i = 0; i < _2DeckShipCount; i++) {
             cout << "2 deck ship (quantity " << _2DeckShipCount-i << "): ";
             _ships[idx++].Entry(x, y, letter, pos, 3, 2, *this);
             Print();
             cout << endl;
         }
-        for (int i = 0; i < _1DeckShipCount; i++) {
+        for ( i = 0; i < _1DeckShipCount; i++) {
             cout << "1 deck ship (quantity " << _1DeckShipCount-i << "): ";
             _ships[idx++].Entry(x, y, letter, pos, 3, 1, *this);
             Print();

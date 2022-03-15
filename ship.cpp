@@ -85,26 +85,7 @@ bool Ship::Create_ship(int x, int y, int dir, string letter, int size_ship, Game
         return false;
     }
 }
-
-void Ship::Create_hand(GameBoard& gameBoard, int size, int x, int y, bool horizontal)
-{
-    _size = size;
-    _cells = new GameBoardCell[size];
-    // заполняем клетки в зависимости от начала координат корябля и его направления
-    for (int i = 0; i < size; i++)
-    {
-        if (horizontal) {
-            _cells[i].SetX(x + i);
-            _cells[i].SetY(y);
-            gameBoard.SetState(x + i, y, Deck);
-        } else {
-            _cells[i].SetX(x);
-            _cells[i].SetY(y + i);
-            gameBoard.SetState(x, y + i, Deck);
-        }
-    }
-}
-bool Ship::TryHit(int x, int y)
+ bool Ship::TryHit(int x, int y)
 {
     for (int i = 0; i < _size; i++)
         if (_cells[i].TryHit(x, y))
