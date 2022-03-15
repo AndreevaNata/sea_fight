@@ -20,7 +20,7 @@ int main() {
     Player.Print();
     Bot.GenerateBot();
 
-    Bot.PrintBot();
+
     int Direction = -1;
     bool step = true;
     bool BotHit = false;
@@ -32,6 +32,8 @@ int main() {
     string letter = "This letter is not permitted. Choose X from: |a b c d e f g h i j| and Y from: |1 2 3 4 5 6 7 8 9 10| - ";
     do {
         if (step) {
+            cout<<endl;
+            Bot.PrintBot();
             cout << "\nYour step..." << endl;
             cout << "Enter x and y coord: X_Y: " << endl;
             char fx;
@@ -42,11 +44,15 @@ int main() {
                 step = false;
                 Player.Print();
                 Bot.PrintBot();
-                cout << "\nYou missed!" << endl;}
+                cout << "\nYou missed!" << endl;
+                Sleep(3000);
+            }
+
             else if (check == 1)  {
-                Player.Print();
+
                 Bot.PrintBot();
                 cout << "\nYou hit bot's ship\a" << endl;
+                Sleep(3000);
             }
             else if (check == 2)  {
                 cout<<"ERROR";
@@ -139,13 +145,13 @@ int main() {
                 int check = Player.Shoot_function( Player,Botx, Boty);
                 if (check ==0) {
                     step = true;
-                    Player.Print();
 
                    // cout << "Bot entered the coordinates: x[" << Botx+1<< "] and y[" << Boty+1 << "]\n";
                     SecondBotHit = false;
 
                     cout << "Bot entered the coordinates: " << Botx_char<< " " << Boty+1;
                     cout << "\nBot missed!\a" << endl;
+                    Sleep(3000);
                 } else if (check ==1) {
                     if (BotHit){
 
@@ -156,13 +162,14 @@ int main() {
                     //system ("cls");
 
                     Player.Print();
-                    Sleep(5000);
-                    Bot.PrintBot();
+
+
 
                     cout << "Bot entered the coordinates: " << Botx_char<< " " << Boty+1;
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
                     cout << "\nBot hit your ship!\a" << endl;
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
+                    Sleep(3000);
                 }
                 else if (check == 3){
                     cout<<"Bot kill your ship"<<endl;
