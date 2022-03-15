@@ -40,19 +40,13 @@ int main(int argc, char** argv) {
             int check = Bot.Shoot_function( Bot, x, y);
             if (check == 0){//стреляем в поле бота
                 step = false;
-                //system ("cls");
                 Player.Print();
                 Bot.PrintBot();
                 cout << "\nYou missed!" << endl;}
             else if (check == 1)  {
-                //system ("cls");
                 Player.Print();
                 Bot.PrintBot();
                 cout << "\nYou hit bot's ship\a" << endl;
-            }
-            else if (check == 2)  {
-                cout<<"ERROR";
-                cout<<" You already was in this cell"<<endl;
             }
 
         } else {
@@ -133,7 +127,6 @@ int main(int argc, char** argv) {
                 int check = Player.Shoot_function( Player,Botx, Boty);
                 if (check ==0) {
                     step = true;
-                    //system ("cls");
                     Player.Print();
                     Bot.PrintBot();
                    // cout << "Bot entered the coordinates: x[" << Botx+1<< "] and y[" << Boty+1 << "]\n";
@@ -146,14 +139,16 @@ int main(int argc, char** argv) {
 
                         SecondBotHit = true;
                     }
-                    //system ("cls");
                     BotHit = true;
-                    //system ("cls");
 
                     Player.Print();
+                    Sleep(5000);
                     Bot.PrintBot();
+
                     cout << "Bot entered the coordinates: " << Botx_char<< " " << Boty+1;
-                    cout << "\n\t\t\t\tBot hit your ship!\a" << endl;
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
+                    cout << "\nBot hit your ship!\a" << endl;
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
                 }
 
 

@@ -37,25 +37,6 @@ public:
 // функция возвращает y текущей клетки
     int GetY()
     { return _y; }
-//функция для цвета попадания
-
-    void SetColor(int text){
-        if (text == 4)
-        {
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
-        }
-        else{
-            HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-            SetConsoleTextAttribute(hStdOut, (WORD)((text)));
-        }
-
-    }
-
-    template<int txt = 7>
-    std::ostream& color(ostream &text) {
-        SetColor(txt);
-        return text;
-    }
 
 // функция - проверка попадания в клетку
     bool TryHit(int x, int y)
