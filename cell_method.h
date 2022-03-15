@@ -15,32 +15,26 @@ public:
         _y = y;
         _state = state;
     }
-    void SetX(int x)
-    { _x = x; }
+
+    void SetX(int x);
 
 // функция устанавливает y-координату клети
-    void SetY(int y)
-    { _y = y; }
+    void SetY(int y);
 
 // функция устанавливает состояние клети
-    void SetState(CellState state)
-    { _state = state; }
+    void SetState(CellState state);
 
 // функция возвращает состояние текущей клетки
-    CellState GetState()
-    { return _state; }
+    CellState GetState();
 
 // функция возвращает x текущей клетки
-    int GetX()
-    { return _x; }
+    int GetX();
 
 // функция возвращает y текущей клетки
-    int GetY()
-    { return _y; }
+    int GetY();
 
 // функция - проверка попадания в клетку
-    bool TryHit(int x, int y)
-    { return (x == _x && y == _y && _state != HitDeck); }
+    bool TryHit(int x, int y);
 
     void Print()
     {
@@ -50,7 +44,7 @@ public:
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
             std::cout<<'x';
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
-           //std::cout<< color('x',4) <<'x'<<std::color;
+            //std::cout<< color('x',4) <<'x'<<std::color;
         }
 
         else if (_state == Deck){
