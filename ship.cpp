@@ -1,6 +1,5 @@
 #include "ship.h"
 #include "bot.h"
-#include <windows.h>
 const int N = 10;
 class GameBoard;
 void Ship::Create_random(GameBoard& gameBoard, int size_ship)
@@ -183,7 +182,7 @@ int GameBoard::Shoot_function(GameBoard& gameBoard, int x, int y) {
 }
     if (flag == 1) return 1;
     else if (gameBoard.GetState(x,y) == Empty){  _cells[y][x].SetState(Miss);return 0;}
-    else if ( gameBoard.GetState(x,y) == HitDeck ||   gameBoard.GetState(x,y) == Miss) return 2;
+    else return 2;
 
 
 
@@ -200,7 +199,7 @@ bool GameBoard::AllShipsDestroyed()
     return true;    // иначе true
 }
 
-void Ship::Entry(int &x, int &y, const string& letter, int &pos, int n, int size_ship, GameBoard& gameBoard) {
+void Ship::Entry(int &x, int &y, const string& letter, int pos, int n, int size_ship, GameBoard& gameBoard) {
     Ship ship;
     char fx;
     bool run = true;
@@ -228,10 +227,16 @@ void Ship::Entry(int &x, int &y, const string& letter, int &pos, int n, int size
             case ('h'): { x = 7; break; }
             case ('i'): { x = 8; break; }
             case ('j'): { x = 9; break; }
-            default: { cout << letter; run = true; }
+            default: { cout << letter; run = true;
+                cin.clear();
+                cin.ignore(32767, '\n');
+                continue; }
         }
         if (((y < 1 || y > 10) && !run) or cin.fail()) {
-            cout << letter; run = true; }
+            cout << letter; run = true;
+            cin.clear();
+            cin.ignore(32767, '\n');
+            continue; }
 
         --y;
         if (n==3) {
@@ -239,9 +244,9 @@ void Ship::Entry(int &x, int &y, const string& letter, int &pos, int n, int size
                 cout << letter; run = true;
             }
         }
-    }
         cin.clear();
         cin.ignore(32767, '\n');
+    }
 }
 
 
@@ -251,39 +256,39 @@ Ship::~Ship()
     if (_size)
         delete _cells;
 }
-void GameBoard::cls(HANDLE hConsole)
-{
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-    SMALL_RECT scrollRect;
-    COORD scrollTarget;
-    CHAR_INFO fill;
-
-    // Get the number of character cells in the current buffer.
-    if (!GetConsoleScreenBufferInfo(hConsole, &csbi))
-    {
-        return;
-    }
-
-    // Scroll the rectangle of the entire buffer.
-    scrollRect.Left = 0;
-    scrollRect.Top = 0;
-    scrollRect.Right = csbi.dwSize.X;
-    scrollRect.Bottom = csbi.dwSize.Y;
-
-    // Scroll it upwards off the top of the buffer with a magnitude of the entire height.
-    scrollTarget.X = 0;
-    scrollTarget.Y = (SHORT)(0 - csbi.dwSize.Y);
-
-    // Fill with empty spaces with the buffer's default text attribute.
-    fill.Char.UnicodeChar = TEXT(' ');
-    fill.Attributes = csbi.wAttributes;
-
-    // Do the scroll
-    ScrollConsoleScreenBuffer(hConsole, &scrollRect, NULL, scrollTarget, &fill);
-
-    // Move the cursor to the top left corner too.
-    csbi.dwCursorPosition.X = 0;
-    csbi.dwCursorPosition.Y = 0;
-
-    SetConsoleCursorPosition(hConsole, csbi.dwCursorPosition);
-}
+//void GameBoard::cls(HANDLE hConsole)
+//{
+//    CONSOLE_SCREEN_BUFFER_INFO csbi;
+//    SMALL_RECT scrollRect;
+//    COORD scrollTarget;
+//    CHAR_INFO fill;
+//
+//    // Get the number of character cells in the current buffer.
+//    if (!GetConsoleScreenBufferInfo(hConsole, &csbi))
+//    {
+//        return;
+//    }
+//
+//    // Scroll the rectangle of the entire buffer.
+//    scrollRect.Left = 0;
+//    scrollRect.Top = 0;
+//    scrollRect.Right = csbi.dwSize.X;
+//    scrollRect.Bottom = csbi.dwSize.Y;
+//
+//    // Scroll it upwards off the top of the buffer with a magnitude of the entire height.
+//    scrollTarget.X = 0;
+//    scrollTarget.Y = (SHORT)(0 - csbi.dwSize.Y);
+//
+//    // Fill with empty spaces with the buffer's default text attribute.
+//    fill.Char.UnicodeChar = TEXT(' ');
+//    fill.Attributes = csbi.wAttributes;
+//
+//    // Do the scroll
+//    ScrollConsoleScreenBuffer(hConsole, &scrollRect, NULL, scrollTarget, &fill);
+//
+//    // Move the cursor to the top left corner too.
+//    csbi.dwCursorPosition.X = 0;
+//    csbi.dwCursorPosition.Y = 0;
+//
+//    SetConsoleCursorPosition(hConsole, csbi.dwCursorPosition);
+//}

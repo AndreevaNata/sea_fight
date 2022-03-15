@@ -35,71 +35,15 @@ int main(int argc, char** argv) {
     bool BotMiss[4] = {false, false, false, false};
     int x = 0,y = 0;
     int Botx = 0, Boty = 0, botx = 0,boty = 0;
+    string letter = "This letter is not permitted. Choose X from: |a b c d e f g h i j| and Y from: |1 2 3 4 5 6 7 8 9 10| - ";
     do {
         if (step == true) {
             cout << "\nYour step..." << endl;
             cout << "Enter x and y coord: X_Y: " << endl;
             char fx;
+            Ship::Entry(x, y, letter, -1, 2, -1, Bot);
 
-            bool run = true;
-            while (run) {
-                run = false;
-                cin >> fx >> y;
-                switch (fx) {
-                    case ('a'): {
-                        x = 0;
-                        break;
-                    }
-                    case ('b'): {
-                        x = 1;
-                        break;
-                    }
-                    case ('c'): {
-                        x = 2;
-                        break;
-                    }
-                    case ('d'): {
-                        x = 3;
-                        break;
-                    }
-                    case ('e'): {
-                        x = 4;
-                        break;
-                    }
-                    case ('f'): {
-                        x = 5;
-                        break;
-                    }
-                    case ('g'): {
-                        x = 6;
-                        break;
-                    }
-                    case ('h'): {
-                        x = 7;
-                        break;
-                    }
-                    case ('i'): {
-                        x = 8;
-                        break;
-                    }
-                    case ('j'): {
-                        x = 9;
-                        break;
-                    }
-                    default: {
-                        cout
-                                << "This letter is not permitted. Choose X from: |a b c d e f g h i j| and Y from: |1 2 3 4 5 6 7 8 9 10| - ";
-                        run = true;
-                    }
-                }
-                if ((y < 1 || y > 10) && !run) {
-                    cout
-                            << "This letter is not permitted. Choose X from: |a b c d e f g h i j| and Y from: |1 2 3 4 5 6 7 8 9 10| - ";
-                    run = true;
-                }
-            }
-            --y;
-int check = Bot.Shoot_function( Bot, x, y);
+            int check = Bot.Shoot_function( Bot, x, y);
             if (check == 0){//стреляем в поле бота
                 step = false;
                 //system ("cls");
@@ -191,8 +135,8 @@ int check = Bot.Shoot_function( Bot, x, y);
                 case (8): { Botx_char = 'i'; break; }
                 case (9): { Botx_char = 'j'; break; }
             }
-               // cout << "Bot entered the coordinates: x[" << x+1<< "] and y[" << y+1 << "]\n";
-               int check = Player.Shoot_function( Player,Botx, Boty);
+                // cout << "Bot entered the coordinates: x[" << x+1<< "] and y[" << y+1 << "]\n";
+                int check = Player.Shoot_function( Player,Botx, Boty);
                 if (check ==0) {
                     step = true;
                     //system ("cls");
