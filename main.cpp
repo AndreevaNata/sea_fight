@@ -54,6 +54,7 @@ int main() {
             }
             else if (check == 3){
                 cout<<"You kill Bot's ship";
+                Bot.PrintBot();
                 list<int> list;
                 list = Bot.ShipsDestroyed();
                 Bot.Remain(list);
@@ -166,6 +167,7 @@ int main() {
                 else if (check == 3){
                     cout<<"Bot kill your ship"<<endl;
                      BotHit= false;
+                    Player.Print();
                         list<int> list;
                         list = Player.ShipsDestroyed();
                         Player.Remain(list);
@@ -272,6 +274,10 @@ void GameBoard::GenerateBot()
     _ships[idx++].Create_random(*this, 1);
     _ships[idx++].Create_random(*this, 1);
 }
+void GameBoard::Remain(list<int> list) {
+
+int onesheep = 0,twosheep = 0, threesheep = 0,foursheep = 0;
+while(list.size() != 0){
 
         switch (list.front()) {
             case (0): { foursheep++; break; }

@@ -93,7 +93,6 @@ public:
     list<int> ShipsDestroyed();
 
     static void Remain(list<int>list);
-    //a;
 
 };
 
