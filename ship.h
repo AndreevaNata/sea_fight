@@ -62,10 +62,6 @@ public:
     void SetState(int x, int y, CellState state)
     { _cells[y][x].SetState(state); }
 
-    bool GETstate(int x,int y){
-        if (_cells[y][x].GetState() == Miss) return true;
-        else return false;
-    }
 
 
     CellState GetState(int x, int y)
@@ -84,8 +80,6 @@ public:
     void PrintBot();
 //    void cls(HANDLE hConsole);
     // функция возвращает число клеток игровой области
-    int GetCount()
-    { return _size * _size; }
 
     // функция возвращает размер игровой области
     int GetSize()
