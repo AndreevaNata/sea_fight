@@ -5,7 +5,6 @@
 #include "ship.h"
 #include <ctime>
 #include "bot.h"
-#include <list>
 
 
 using namespace std;
@@ -41,13 +40,11 @@ int main() {
             int check = Bot.Shoot_function( Bot, x, y);
             if (check == 0){//стреляем в поле бота
                 step = false;
-                //system ("cls");
-
+                Player.Print();
                 Bot.PrintBot();
                 cout << "\nYou missed!" << endl;}
             else if (check == 1)  {
-                //system ("cls");
-
+                Player.Print();
                 Bot.PrintBot();
                 cout << "\nYou hit bot's ship\a" << endl;
             }
@@ -141,8 +138,6 @@ int main() {
                 int check = Player.Shoot_function( Player,Botx, Boty);
                 if (check ==0) {
                     step = true;
-                    //system ("cls");
-
                     Player.Print();
 
                    // cout << "Bot entered the coordinates: x[" << Botx+1<< "] and y[" << Boty+1 << "]\n";
@@ -160,9 +155,13 @@ int main() {
                     //system ("cls");
 
                     Player.Print();
+                    Sleep(5000);
+                    Bot.PrintBot();
 
                     cout << "Bot entered the coordinates: " << Botx_char<< " " << Boty+1;
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
                     cout << "\nBot hit your ship!\a" << endl;
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
                 }
                 else if (check == 3){
                     cout<<"Bot kill your ship"<<endl;
@@ -273,11 +272,6 @@ void GameBoard::GenerateBot()
     _ships[idx++].Create_random(*this, 1);
     _ships[idx++].Create_random(*this, 1);
 }
-void GameBoard::Remain(list<int>list)
-{
-    int onesheep=0,twosheep=0,threesheep=0,foursheep=0;
-    while(list.size() != 0) {
-        //sa;
 
         switch (list.front()) {
             case (0): { foursheep++; break; }
