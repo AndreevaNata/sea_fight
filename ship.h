@@ -20,7 +20,7 @@ public:
     }
     void Create_random(GameBoard& gameBoard, int size_ship);
 
-    bool Create_ship(int x, int y, int dir, string letter, int size_ship, GameBoard& gameBoard);
+    bool Create_ship(int x, int y, int dir, int size_ship, GameBoard& gameBoard);
     static void Entry(int &x, int &y, const string& letter, int pos, int n, int size_ship, GameBoard& gameBoard);
 
 

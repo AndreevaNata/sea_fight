@@ -16,13 +16,13 @@ void Ship::Create_random(GameBoard& gameBoard, int size_ship)
 
         dir = rand() % 4;
 
-        if (Create_ship(x, y, dir, "", size_ship, gameBoard)) {
+        if (Create_ship(x, y, dir, size_ship, gameBoard)) {
             count_ship++;
         }
     }
 }
 
-bool Ship::Create_ship(int x, int y, int dir, string letter, int size_ship, GameBoard& gameBoard) {
+bool Ship::Create_ship(int x, int y, int dir, int size_ship, GameBoard& gameBoard) {
     bool setting_is_possible = true;
     _cells = new GameBoardCell[size_ship];
     int _x, _y;
@@ -37,16 +37,15 @@ bool Ship::Create_ship(int x, int y, int dir, string letter, int size_ship, Game
             gameBoard.GetState(_x + 1, _y - 1) != Deck &&
             gameBoard.GetState(_x - 1, _y) != Deck &&
             gameBoard.GetState(_x - 1, _y + 1) != Deck &&
-            gameBoard.GetState(_x - 1, _y - 1) != Deck) {
-            setting_is_possible = true;
+            gameBoard.GetState(_x - 1, _y - 1) != Deck)
+        { setting_is_possible = true;
         } else {
             setting_is_possible = false;
-            cout << letter;
             break;
         }
         switch (dir) {
             case 0:
-                _y--;
+                _y++;
                 break;
             case 1:
                 _x++;
@@ -55,7 +54,7 @@ bool Ship::Create_ship(int x, int y, int dir, string letter, int size_ship, Game
                 _x--;
                 break;
             case 3:
-                _y++;
+                _y--;
                 break;
         }
     }
@@ -66,7 +65,7 @@ bool Ship::Create_ship(int x, int y, int dir, string letter, int size_ship, Game
             gameBoard.SetState(x , y, Deck);
             switch (dir) {
                 case 0:
-                    y--;
+                    y++;
                     break;
                 case 1:
                     x++;
@@ -75,7 +74,7 @@ bool Ship::Create_ship(int x, int y, int dir, string letter, int size_ship, Game
                     x--;
                     break;
                 case 3:
-                    y++;
+                    y--;
                     break;
             }
         }
@@ -248,7 +247,7 @@ void Ship::Entry(int &x, int &y, const string& letter, int pos, int n, int size_
 
         --y;
         if (n==3) {
-            if(!(ship.Ship::Create_ship(x,y,pos,letter,size_ship,gameBoard))) {
+            if(!(ship.Ship::Create_ship(x,y,pos,size_ship,gameBoard))) {
                 cout << letter; run = true;
             }
         }
