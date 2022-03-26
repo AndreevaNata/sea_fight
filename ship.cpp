@@ -24,11 +24,12 @@ void Ship::Create_random(GameBoard& gameBoard, int size_ship)
 
 bool Ship::Create_ship(int x, int y, int dir, int size_ship, GameBoard& gameBoard) {
     bool setting_is_possible = true;
-    _cells = new GameBoardCell[size_ship];
+    _size = size_ship;
+    _cells = new GameBoardCell[_size];
     int _x, _y;
     _x = x;
     _y = y;
-    for (int i = 0; i < size_ship; i++) {
+    for (int i = 0; i < _size; i++) {
         if (gameBoard.GetState(_x, _y) == Empty &&
             gameBoard.GetState(_x, _y + 1) != Deck &&
             gameBoard.GetState(_x, _y - 1) != Deck &&
@@ -59,7 +60,7 @@ bool Ship::Create_ship(int x, int y, int dir, int size_ship, GameBoard& gameBoar
         }
     }
     if (setting_is_possible) {
-        for (int i = 0; i < size_ship; i++) {
+        for (int i = 0; i < _size; i++) {
             _cells[i].SetX(x);
             _cells[i].SetY(y);
             gameBoard.SetState(x , y, Deck);
@@ -169,7 +170,7 @@ int GameBoard::Shoot_function(GameBoard& gameBoard, int x, int y) {
 }
     if (flag == 1) return 1;
     else if (flag == 2) return 3;
-    else if (gameBoard.GetState(x,y) == Empty){  _cells[y][x].SetState(Miss);return 0;}
+    else if (gameBoard.GetState(x,y) == Empty) { _cells[y][x].SetState(Miss); return 0;}
     else return 2;
 
 
@@ -206,8 +207,8 @@ list<int> GameBoard::ShipsDestroyed()
 
 
 
-void Ship::Entry(int &x, int &y, const string& letter, int pos, int n, int size_ship, GameBoard& gameBoard) {
-    Ship ship;
+void Ship::Entry(GameBoard& gameBoard, int &x, int &y, const string& letter, int pos, int n, int size_ship) {
+    _size = size_ship;
     char fx;
     bool run = true;
     while (run) {
@@ -247,7 +248,7 @@ void Ship::Entry(int &x, int &y, const string& letter, int pos, int n, int size_
 
         --y;
         if (n==3) {
-            if(!(ship.Ship::Create_ship(x,y,pos,size_ship,gameBoard))) {
+            if(!(Create_ship(x,y,pos,size_ship,gameBoard))) {
                 cout << letter; run = true;
             }
         }

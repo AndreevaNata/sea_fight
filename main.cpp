@@ -37,7 +37,7 @@ int main() {
             cout << "\nYour step..." << endl;
             cout << "Enter x and y coord: X_Y: " << endl;
             char fx;
-            Ship::Entry(x, y, letter, -1, 2, -1, Bot);
+            (new Ship)->Entry(Bot, x, y, letter, -1, 2, -1);
 
             int check = Bot.Shoot_function( Bot, x, y);
             if (check == 0){//стреляем в поле бота
@@ -59,7 +59,7 @@ int main() {
                 cout<<" You already was in this cell"<<endl;
             }
             else if (check == 3){
-                cout<<"You kill Bot's ship";
+                cout<<"You kill Bot's ship\n";
                 Bot.PrintBot();
                 list<int> list;
                 list = Bot.ShipsDestroyed();
@@ -212,7 +212,7 @@ void GameBoard::Generate() {
         int i = 0;
         while (i < _4DeckShipCount) {
             cout << "4 deck ship (quantity " << _4DeckShipCount-i << "): ";
-            _ships[idx++].Entry(x, y, letter, pos, 3, 4, *this);
+            _ships[idx++].Entry(*this, x, y, letter, pos, 3, 4);
             Print();
             cout << endl;
             i++;
@@ -236,10 +236,13 @@ void GameBoard::Generate() {
             cout << endl;
         }
         cout << "Game starts!" << endl;
-    }
-    else{
-        // заполняем игровое поле пустыми клетками
 
+
+        cout << "player" << endl;
+
+    }
+    else {
+        // расставляем 4-х палубные
         _ships[idx++].Create_random(*this, 4);
         // расставляем 3-х палубные
         _ships[idx++].Create_random(*this, 3);
@@ -248,7 +251,6 @@ void GameBoard::Generate() {
         _ships[idx++].Create_random(*this, 2);
         _ships[idx++].Create_random(*this, 2);
         _ships[idx++].Create_random(*this, 2);
-
         // расставляем 1-х палубные
         _ships[idx++].Create_random(*this, 1);
         _ships[idx++].Create_random(*this, 1);

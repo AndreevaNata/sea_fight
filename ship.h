@@ -21,7 +21,7 @@ public:
     void Create_random(GameBoard& gameBoard, int size_ship);
 
     bool Create_ship(int x, int y, int dir, int size_ship, GameBoard& gameBoard);
-    static void Entry(int &x, int &y, const string& letter, int pos, int n, int size_ship, GameBoard& gameBoard);
+    void Entry(GameBoard& gameBoard, int &x, int &y, const string& letter, int pos, int n, int size_ship);
 
 
     ~Ship();
@@ -38,7 +38,7 @@ public:
 // класс - игровое поле
 class GameBoard {
 private:
-    static const int _size = 10;            // размер игорового поля
+    static const int _size = 10;            // размер игрового поля
     static const int _4DeckShipCount = 1;   // число 4-х палубных
     static const int _3DeckShipCount = 2;   // число 3-х палубных
     static const int _2DeckShipCount = 3;   // число 2-х палубных
@@ -46,7 +46,6 @@ private:
     static const int _shipsCount = _4DeckShipCount + _3DeckShipCount + _2DeckShipCount + _1DeckShipCount;   // число кораблей
     GameBoardCell _cells[_size][_size]; // клетки игрового поля
     Ship _ships[_shipsCount];   // корабли
-
 
     // функция создание игрового поля
 
