@@ -219,19 +219,19 @@ void GameBoard::Generate() {
         }
         for ( i = 0; i < _3DeckShipCount; i++) {
             cout << "3 deck ship (quantity " << _3DeckShipCount-i << "): ";
-            _ships[idx++].Entry(x, y, letter, pos, 3, 3, *this);
+            _ships[idx++].Entry(*this, x, y, letter, pos, 3, 3);
             Print();
             cout << endl;
         }
         for (i = 0; i < _2DeckShipCount; i++) {
             cout << "2 deck ship (quantity " << _2DeckShipCount-i << "): ";
-            _ships[idx++].Entry(x, y, letter, pos, 3, 2, *this);
+            _ships[idx++].Entry(*this, x, y, letter, pos, 3, 2);
             Print();
             cout << endl;
         }
         for ( i = 0; i < _1DeckShipCount; i++) {
             cout << "1 deck ship (quantity " << _1DeckShipCount-i << "): ";
-            _ships[idx++].Entry(x, y, letter, pos, 3, 1, *this);
+            _ships[idx++].Entry(*this, x, y, letter, pos, 3, 1);
             Print();
             cout << endl;
         }
