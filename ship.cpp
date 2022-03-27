@@ -225,6 +225,11 @@ GameBoardCell GameBoard::getSafeCell(GameBoard& gameBoard, GameBoardCell& cell) 
     return cell;
 }
 
+GameBoardCell GameBoard::getCell(int x, int y) {
+    return _cells[x][y];
+}
+
+
 LevelOfComplexity GameBoard::getLevelOfComplexity() const {
     return _levelOfComplexity;
 }

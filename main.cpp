@@ -49,8 +49,7 @@ int main() {
         if (step) {
             cout<<endl;
 
-            Player.print();
-            Bot.printBot();
+            Bot.printBothBoards(Player);
             cout << "\nYour step..." << endl;
 
             cout << "Enter x and y coord: X_Y: " << endl;
@@ -60,15 +59,14 @@ int main() {
             int check = Bot.shootFunction(Bot, x, y);
             if (check == 0){ //стреляем в поле бота
                 step = false;
-                Player.print();
-                Bot.printBot();
+                Bot.printBothBoards(Player);
                 cout << "\nYou missed!" << endl;
 //                Sleep(3000);
             }
 
             else if (check == 1)  {
 
-                Bot.printBot();
+                Bot.printBothBoards(Player);
                 cout << "\nYou hit bot's ship\a" << endl;
 //                Sleep(3000);
             }
@@ -78,7 +76,7 @@ int main() {
             }
             else if (check == 3){
                 cout<<"You kill Bot's ship\n";
-                Bot.printBot();
+                Bot.printBothBoards(Player);
                 list<int> list;
                 list = Bot.shipsDestroyed();
                 Bot.remain(list);
@@ -189,7 +187,7 @@ int main() {
                         SecondBotHit = true;
                     }
                     BotHit = true;
-                    Player.print();
+                    Bot.printBothBoards(Player);
 
 
 
@@ -217,7 +215,7 @@ int main() {
                     BotHit = false;
                     SecondBotHit =false;
                     Direction = 0;
-                    Player.print();
+                    Bot.printBothBoards(Player);
                         list<int> list;
                         list = Player.shipsDestroyed();
                     Player.remain(list);
@@ -387,7 +385,7 @@ void GameBoard::remain(list<int> list) {
 
 void GameBoard::print()
 {
-    cout<< "Player's board"<<endl;
+    cout << "   " << "Player's board"<<endl;
     cout << ' ' << ' ' << ' ';
     cout << 'a' << ' ';
     cout << 'b' << ' ';
@@ -417,7 +415,7 @@ void GameBoard::print()
 
 }
 void GameBoard::printBot() {
-    cout << "Bot's board" << endl;
+    cout << "   " << "Bot's board" << endl;
     cout << ' ' << ' ' << ' ';
     cout << 'a' << ' ';
     cout << 'b' << ' ';
@@ -444,6 +442,61 @@ void GameBoard::printBot() {
 
         cout << endl;
     }
+}
+
+void GameBoard::printBothBoards(GameBoard& playerBoard) {
+    cout << "   " << "Bot's board" << "                      " << "Player's board" << endl;
+    cout << ' ' << ' ' << ' ';
+    cout << 'a' << ' ';
+    cout << 'b' << ' ';
+    cout << 'c' << ' ';
+    cout << 'd' << ' ';
+    cout << 'e' << ' ';
+    cout << 'f' << ' ';
+    cout << 'g' << ' ';
+    cout << 'h' << ' ';
+    cout << 'i' << ' ';
+    cout << 'j' << ' ';
+    cout << "          ";
+    cout << ' ' << ' ' << ' ';
+    cout << 'a' << ' ';
+    cout << 'b' << ' ';
+    cout << 'c' << ' ';
+    cout << 'd' << ' ';
+    cout << 'e' << ' ';
+    cout << 'f' << ' ';
+    cout << 'g' << ' ';
+    cout << 'h' << ' ';
+    cout << 'i' << ' ';
+    cout << 'j' << ' ';
+    cout << endl;
+
+    for (int i = 0; i < _size; i++) {
+        if (i == _size-1) {
+            cout << i + 1; }
+        else {
+            cout << ' ' << i + 1; }
+        cout << "|";
+        for (int j = 0; j < _size; j++) {
+            _cells[i][j].printBot();
+            cout << "|";
+        }
+
+        cout << "          ";
+
+        if (i == _size-1) {
+            cout << i + 1; }
+        else {
+            cout << ' ' << i + 1; }
+        cout << "|";
+        for (int j = 0; j < _size; j++) {
+            playerBoard.getCell(i, j).print();
+            cout << "|";
+        }
+
+        cout << endl;
+    }
+    cout << endl;
 }
 
 

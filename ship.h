@@ -68,7 +68,7 @@ public:
     void setState(int x, int y, CellState state)
     { _cells[y][x].setState(state); }
 
-
+    GameBoardCell getCell(int x, int y);
 
     CellState getState(int x, int y)
     { if (x >= 0 && y >= 0 && x < _size && y < _size)
@@ -84,6 +84,7 @@ public:
     // функция печати игрового поля
     void print();
     void printBot();
+    void printBothBoards(GameBoard& playerBoard);
 //    void cls(HANDLE hConsole);
     // функция возвращает число клеток игровой области
 
