@@ -32,7 +32,19 @@ int main() {
     bool BotMiss[4] = {false, false, false, false};
     int x = 0,y = 0;
     int Botx = 0, Boty = 0, botx = 0,boty = 0;
+    Bot.setLevelOfComplexity(Player.getLevelOfComplexity());
     string letter = "This letter is not permitted. Choose X from: |a b c d e f g h i j| and Y from: |1 2 3 4 5 6 7 8 9 10| - ";
+    int level;
+    bool checkHint = true;
+    if (Player.getLevelOfComplexity() == Easy) {
+        level = 5;
+    }
+    else if (Player.getLevelOfComplexity() == Middle) {
+        level = 4;
+    }
+    else if (Player.getLevelOfComplexity() == Hard) {
+        level = 1;
+    }
     do {
         if (step) {
             cout<<endl;
@@ -46,7 +58,7 @@ int main() {
             (new Ship)->entry(Bot, x, y, letter, -1, 2, -1);
 
             int check = Bot.shootFunction(Bot, x, y);
-            if (check == 0){//стреляем в поле бота
+            if (check == 0){ //стреляем в поле бота
                 step = false;
                 Player.print();
                 Bot.printBot();
@@ -77,7 +89,6 @@ int main() {
 
             cout << "\nStep Bot...\n"<< endl;
             if (BotHit){
-
                 if (!SecondBotHit){
                     while (true){
                         Botx = botx;
@@ -104,11 +115,12 @@ int main() {
                             break;
                         }
 
-
-
+                    }
+                    for (int j = 0; j < 4; j++){
+                        BotMiss[j] = false;
                     }
                 }
-                else{ //При втором попадании стреляет в направлении, в котором раньше стрелял
+                else { //При втором попадании стреляет в направлении, в котором раньше стрелял
                     if (Direction == 1 && Boty - 1 >= 0){
                         Boty--;
                     }
@@ -127,18 +139,10 @@ int main() {
                 }
             }
             else {
-                int level = 5;
-                if (Player.getLevelOfComplexity() == Easy) {
-                    level = 5;
-                }
-                else if (Player.getLevelOfComplexity() == Middle) {
-                    level = 4;
-                }
-                else if (Player.getLevelOfComplexity() == Hard) {
-                    level = 3;
-                }
-                if (countMiss >= level) {
-                    GameBoardCell cell = Player.getSafeCell(Player);
+                if ((countMiss >= level) && (checkHint)) {
+                    checkHint = false;
+                    GameBoardCell cell;
+                    Player.getSafeCell(Player, cell);
                     if (cell.getX() == -1) {
                         Botx = rand() % N;
                         Boty =  rand() % N; }
@@ -195,7 +199,6 @@ int main() {
                     countMiss = 0;
 //                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
 //                    Sleep(3000);
-                cout << "n";
                 }
                 else if (check == 3){
                     cout<<"Bot kill your ship"<<endl;
@@ -210,6 +213,7 @@ int main() {
                     for (int j = 0; j < 4; j++){
                         BotMiss[j] = false;
                     }
+                    checkHint = true;
                     BotHit = false;
                     SecondBotHit =false;
                     Direction = 0;
@@ -258,11 +262,11 @@ void GameBoard::Generate() {
         string level;
         cin >> level;
         if (level == "EASY") {
-            levelOfComplexity = Easy;
+            _levelOfComplexity = Easy;
         } else if (level == "MIDDLE") {
-            levelOfComplexity = Middle;
+            _levelOfComplexity = Middle;
         } else if (level == "HARD") {
-            levelOfComplexity = Hard;
+            _levelOfComplexity = Hard;
         } else {
             cout << "\nError! Please, try again.\n\n";
             lCheck = true;

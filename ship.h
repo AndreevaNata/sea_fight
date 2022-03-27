@@ -26,9 +26,6 @@ public:
     bool createShip(int x, int y, int dir, int size_ship, GameBoard& gameBoard);
     void entry(GameBoard& gameBoard, int &x, int &y, const string& letter, int pos, int n, int size_ship);
 
-
-    ~Ship();
-
     // функция возвращает состояние корабля, выполнив проверку целостности всех палуб
     ShipState getState();
     GameBoardCell *getCells();
@@ -37,6 +34,7 @@ public:
     bool shootShip(GameBoard& gameBoard, int x, int y);
 
     bool tryHit(int x, int y);
+    ~Ship();
 };
 
 // класс - игровое поле
@@ -50,15 +48,15 @@ private:
     static const int _shipsCount = _4DeckShipCount + _3DeckShipCount + _2DeckShipCount + _1DeckShipCount;   // число кораблей
     GameBoardCell _cells[_size][_size]; // клетки игрового поля
     Ship _ships[_shipsCount];   // корабли
-    LevelOfComplexity levelOfComplexity;
+    LevelOfComplexity _levelOfComplexity = Easy;
+
 public:
+
     LevelOfComplexity getLevelOfComplexity() const;
 
     void setLevelOfComplexity(LevelOfComplexity levelOfComplexity);
 
     // функция создание игрового поля
-
-public:
 
     void Generate();
     void GenerateBot();
@@ -94,7 +92,7 @@ public:
     { return _size; }
 
     // функция возвращает координаты клетки safe корабля
-    GameBoardCell getSafeCell(GameBoard& gameBoard);
+    GameBoardCell getSafeCell(GameBoard& gameBoard, GameBoardCell& cell);
 
     // функция - выстрел в игровое поле
     int shootFunction(GameBoard& gameBoard, int x, int y);

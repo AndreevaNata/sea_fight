@@ -208,28 +208,29 @@ list<int> GameBoard::shipsDestroyed()
     return list;    // иначе true
 }
 
-GameBoardCell GameBoard::getSafeCell(GameBoard& gameBoard) {
-    GameBoardCell cell;
+GameBoardCell GameBoard::getSafeCell(GameBoard& gameBoard, GameBoardCell& cell) {
     bool check = false;
-    for (Ship ship : _ships) {
-        if (ship.getState() == Safe) {
+    for (int i = 0; i < _shipsCount; i++) {
+        if (_ships[i].getState() == Safe) {
             check = true;
-            cell = ship.getCells()[0];
+            cell = _ships[i].getCells()[0];
+            break;
         }
     }
     if (!check) {
         cell.setX(-1);
         cell.setY(-1);
+        cell.setState(Empty);
     }
     return cell;
 }
 
 LevelOfComplexity GameBoard::getLevelOfComplexity() const {
-    return levelOfComplexity;
+    return _levelOfComplexity;
 }
 
 void GameBoard::setLevelOfComplexity(LevelOfComplexity levelOfComplexity) {
-    GameBoard::levelOfComplexity = levelOfComplexity;
+    GameBoard::_levelOfComplexity = levelOfComplexity;
 }
 
 
