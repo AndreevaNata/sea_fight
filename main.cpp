@@ -17,7 +17,6 @@ int main() {
     HANDLE hStdout;
     hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 
-
     srand(time(0));
     const int N = 10;
     GameBoard Player;
@@ -80,8 +79,6 @@ int main() {
             }
 
         } else {
-
-            cout << "\nStep Bot...\n"<< endl;
 
             if (BotHit){
 
@@ -158,11 +155,15 @@ int main() {
                 if (check ==0) {
                     step = true;
                     SecondBotHit = false;
+                    cout << "\nStep Bot...\n"<< endl;
+                    Sleep(1000);
 
                     cout << "Bot entered the coordinates: " << Botx_char<< " " << Boty+1;
                     cout << "\nBot missed!\a" << endl;
                     Sleep(3000);
                 } else if (check ==1) {
+                    cout << "\nStep Bot...\n"<< endl;
+                    Sleep(1000);
                     if (BotHit){
 
                         SecondBotHit = true;
@@ -179,8 +180,11 @@ int main() {
                     Sleep(3000);
                 }
                 else if (check == 3){
+                    cout << "\nStep Bot...\n"<< endl;
+                    cout << "Bot entered the coordinates: " << Botx_char<< " " << Boty+1;
+                    Sleep(1000);
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
-                    cout<<"Bot kill your ship"<<endl;
+                    cout<<"\n Bot kill your ship\n"<<endl;
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
                     for (int j = 0; j < 4; j++){
                         BotMiss[j] = false;
@@ -192,9 +196,11 @@ int main() {
                         list<int> list;
                         list = Player.ShipsDestroyed();
                         Player.Remain(list);
+                        Sleep(3000);
 
                     }
-                else if (check == 2)  {
+                else{
+                    continue;
                 }
 
                 }
