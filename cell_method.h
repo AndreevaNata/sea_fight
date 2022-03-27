@@ -1,7 +1,7 @@
 // класс - клетка игрового поля
 #include <iostream>
 #include "emun.h"
-#include <windows.h>
+//#include <windows.h>
 #ifndef UNTITLED12_CELL_H
 #define UNTITLED12_CELL_H
 using namespace std;
@@ -16,55 +16,55 @@ public:
         _state = state;
     }
 
-    void SetX(int x);
+    void setX(int x);
 
 // функция устанавливает y-координату клети
-    void SetY(int y);
+    void setY(int y);
 
 // функция устанавливает состояние клети
-    void SetState(CellState state);
+    void setState(CellState state);
 
 // функция возвращает состояние текущей клетки
-    CellState GetState();
+    CellState getState();
 
 // функция возвращает x текущей клетки
-    int GetX();
+    int getX();
 
 // функция возвращает y текущей клетки
-    int GetY();
+    int getY();
 
 // функция - проверка попадания в клетку
-    bool TryHit(int x, int y);
+    bool tryHit(int x, int y);
 
-    void Print()
+    void print()
     {
         if (_state == Empty)
             cout << ' ';
         else if (_state == HitDeck){
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
+//            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
             std::cout<<'x';
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
+//            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
             //std::cout<< color('x',4) <<'x'<<std::color;
         }
 
         else if (_state == Deck){
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_GREEN);
+//            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_GREEN);
             cout << 'd';
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
+//            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
         }
 
         else
             cout << '*';
     }
 
-    void PrintBot()
+    void printBot()
     {
         if (_state == Empty)
             cout << ' ';
         else if (_state == HitDeck){
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
+//            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
             std::cout<<'x';
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
+//            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
 
         }
 

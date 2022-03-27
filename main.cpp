@@ -5,17 +5,14 @@
 #include "ship.h"
 #include <ctime>
 #include "bot.h"
-#include <windows.h>
+
 
 using namespace std;
-
-
-
 // заранее объявим, чтобы можно было указывать в качестве аргумент функций класса Ship
 class GameBoard;
 int main() {
-    HANDLE hStdout;
-    hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+//    HANDLE hStdout;
+//    hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 
     srand(time(0));
     const int N = 10;
@@ -30,7 +27,7 @@ int main() {
     int Direction = -1;
     bool step = true;
     bool BotHit = false;
-
+    int countMiss = 0;
     bool SecondBotHit = false;
     bool BotMiss[4] = {false, false, false, false};
     int x = 0,y = 0;
@@ -40,53 +37,52 @@ int main() {
         if (step) {
             cout<<endl;
 
-            Player.Print();
-            Bot.PrintBot();
+            Player.print();
+            Bot.printBot();
             cout << "\nYour step..." << endl;
 
             cout << "Enter x and y coord: X_Y: " << endl;
             char fx;
             (new Ship)->Entry(Bot, x, y, letter, -1, 2, -1);
 
-            int check = Bot.Shoot_function( Bot, x, y);
+            int check = Bot.shootFunction(Bot, x, y);
             if (check == 0){//стреляем в поле бота
                 step = false;
-                Player.Print();
-                Bot.PrintBot();
+                Player.print();
+                Bot.printBot();
                 cout << "\nYou missed!" << endl;
-                Sleep(3000);
+//                Sleep(3000);
             }
 
             else if (check == 1)  {
 
-                Bot.PrintBot();
+                Bot.printBot();
                 cout << "\nYou hit bot's ship\a" << endl;
-                Sleep(3000);
+//                Sleep(3000);
             }
             else if (check == 2)  {
                 cout<<"ERROR";
                 cout<<" You already was in this cell"<<endl;
             }
             else if (check == 3){
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN);
                 cout<<"You kill Bot's ship\n";
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
-                Bot.PrintBot();
+                Bot.printBot();
                 list<int> list;
-                list = Bot.ShipsDestroyed();
-                Bot.Remain(list);
+                list = Bot.shipsDestroyed();
+                Bot.remain(list);
 
             }
 
         } else {
 
+            cout << "\nStep Bot...\n"<< endl;
             if (BotHit){
 
                 if (!SecondBotHit){
                     while (true){
                         Botx = botx;
                         Boty = boty;
-                        Direction = 1 + rand() % 4;
+                        Direction = 1+rand() % 4;
                         if (Direction == 1 && !BotMiss[0] && Boty - 1 >= 0){
                             Boty--; //Стреляет левее
                             BotMiss[0] = true;
@@ -131,8 +127,17 @@ int main() {
                 }
             }
             else {
-                Botx = rand() % N;
-                Boty =  rand() % N;
+                if (countMiss > 4) {
+                    GameBoardCell cell = Player.getSafeCell(Player);
+                    if (cell.getX() == -1) {
+                        Botx = rand() % N;
+                        Boty =  rand() % N; }
+                    else {
+                        Botx = cell.getX();
+                        Boty =  cell.getY(); }
+                } else {
+                    Botx = rand() % N;
+                    Boty =  rand() % N; }
                 botx = Botx;
                 boty = Boty;
 
@@ -151,52 +156,57 @@ int main() {
                 case (8): { Botx_char = 'i'; break; }
                 case (9): { Botx_char = 'j'; break; }
             }
-                int check = Player.Shoot_function( Player,Botx, Boty);
-                if (check ==0) {
+                int check = Player.shootFunction(Player, Botx, Boty);
+                if (check == 0) {
                     step = true;
                     SecondBotHit = false;
                     cout << "\nStep Bot...\n"<< endl;
-                    Sleep(1000);
+//                    Sleep(1000);
 
                     cout << "Bot entered the coordinates: " << Botx_char<< " " << Boty+1;
                     cout << "\nBot missed!\a" << endl;
-                    Sleep(3000);
+                    countMiss++;
+//                    Sleep(3000);
                 } else if (check ==1) {
                     cout << "\nStep Bot...\n"<< endl;
-                    Sleep(1000);
+//                    Sleep(1000);
                     if (BotHit){
 
                         SecondBotHit = true;
                     }
                     BotHit = true;
-                    Player.Print();
+                    Player.print();
 
 
 
                     cout << "Bot entered the coordinates: " << Botx_char<< " " << Boty+1;
-                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
+//                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
                     cout << "\nBot hit your ship!\a" << endl;
-                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
-                    Sleep(3000);
+                    countMiss = 0;
+//                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
+//                    Sleep(3000);
+                cout << "n";
                 }
                 else if (check == 3){
+                    cout<<"Bot kill your ship"<<endl;
+                    countMiss = 0;
+//                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
                     cout << "\nStep Bot...\n"<< endl;
                     cout << "Bot entered the coordinates: " << Botx_char<< " " << Boty+1;
-                    Sleep(1000);
-                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
+//                    Sleep(1000);
+//                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
                     cout<<"\n Bot kill your ship\n"<<endl;
-                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
+//                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
                     for (int j = 0; j < 4; j++){
                         BotMiss[j] = false;
                     }
-                     BotHit = false;
-                     SecondBotHit =false;
-                     Direction = 0;
-                    Player.Print();
+                    BotHit = false;
+                    SecondBotHit =false;
+                    Direction = 0;
+                    Player.print();
                         list<int> list;
-                        list = Player.ShipsDestroyed();
-                        Player.Remain(list);
-                        Sleep(3000);
+                        list = Player.shipsDestroyed();
+                    Player.remain(list);
 
                     }
                 else{
@@ -207,15 +217,16 @@ int main() {
 
 
 
-    }while (!Player.AllShipsDestroyed() && !Bot.AllShipsDestroyed());
-  if(Player.AllShipsDestroyed()) {
-      SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_BLUE);
+    }while (!Player.allShipsDestroyed() && !Bot.allShipsDestroyed());
+  if(Player.allShipsDestroyed()) {
+//      SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_BLUE);
       cout<<"\n Bot win!\n";
-      SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);}
+//      SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
+      }
   else{
-      SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_GREEN);
+//      SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_GREEN);
       cout<<"\n You win! \n";
-      SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
+//      SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
 
   }
 
@@ -228,7 +239,7 @@ void GameBoard::Generate() {
     // заполняем игровое поле пустыми клетками
     for (int i = 0; i < _size; i++)
         for (int j = 0; j < _size; j++)
-            _cells[i][j].SetState(Empty);
+            _cells[i][j].setState(Empty);
     int idx = 0;
     cout << "How do you want to set up the ships?" << endl;
     cout << "Enter 0 (on your own) or 1 (random): ";
@@ -244,26 +255,26 @@ void GameBoard::Generate() {
         while (i < _4DeckShipCount) {
             cout << "4 deck ship (quantity " << _4DeckShipCount-i << "): ";
             _ships[idx++].Entry(*this, x, y, letter, pos, 3, 4);
-            Print();
+            print();
             cout << endl;
             i++;
         }
         for ( i = 0; i < _3DeckShipCount; i++) {
             cout << "3 deck ship (quantity " << _3DeckShipCount-i << "): ";
             _ships[idx++].Entry(*this, x, y, letter, pos, 3, 3);
-            Print();
+            print();
             cout << endl;
         }
         for (i = 0; i < _2DeckShipCount; i++) {
             cout << "2 deck ship (quantity " << _2DeckShipCount-i << "): ";
             _ships[idx++].Entry(*this, x, y, letter, pos, 3, 2);
-            Print();
+            print();
             cout << endl;
         }
         for ( i = 0; i < _1DeckShipCount; i++) {
             cout << "1 deck ship (quantity " << _1DeckShipCount-i << "): ";
             _ships[idx++].Entry(*this, x, y, letter, pos, 3, 1);
-            Print();
+            print();
             cout << endl;
         }
         cout << "Game starts!" << endl;
@@ -290,14 +301,13 @@ void GameBoard::Generate() {
     }
 
 }
-void GameBoard::GenerateBot()
-{
+void GameBoard::GenerateBot() {
     // заполняем игровое поле пустыми клетками
 
     int idx = 0;
     for (int i = 0; i < _size; i++)
         for (int j = 0; j < _size; j++)
-            _cells[i][j].SetState(Empty);
+            _cells[i][j].setState(Empty);
     // расставляем 4-х палубные
     _ships[idx++].Create_random(*this, 4);
     // расставляем 3-х палубные
@@ -314,10 +324,10 @@ void GameBoard::GenerateBot()
     _ships[idx++].Create_random(*this, 1);
     _ships[idx++].Create_random(*this, 1);
 }
-void GameBoard::Remain(list<int> list) {
+void GameBoard::remain(list<int> list) {
 
-int onesheep = 0,twosheep = 0, threesheep = 0,foursheep = 0;
-while(list.size() != 0){
+    int onesheep = 0,twosheep = 0, threesheep = 0,foursheep = 0;
+    while(list.size() != 0) {
 
         switch (list.front()) {
             case (0): { foursheep++; break; }
@@ -343,7 +353,7 @@ while(list.size() != 0){
 
 }
 
-void GameBoard::Print()
+void GameBoard::print()
 {
     cout<< "Player's board"<<endl;
     cout << ' ' << ' ' << ' ';
@@ -367,14 +377,14 @@ void GameBoard::Print()
         cout << "|";
         for (int j = 0; j < _size; j++)
         {
-            _cells[i][j].Print();
+            _cells[i][j].print();
             cout << "|";
         }
         cout << endl;
     }
 
 }
-void GameBoard::PrintBot() {
+void GameBoard::printBot() {
     cout << "Bot's board" << endl;
     cout << ' ' << ' ' << ' ';
     cout << 'a' << ' ';
@@ -396,7 +406,7 @@ void GameBoard::PrintBot() {
         cout << "|";
         for (int j = 0; j < _size; j++) {
 
-            _cells[i][j].PrintBot();
+            _cells[i][j].printBot();
             cout << "|";
         }
 

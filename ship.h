@@ -9,7 +9,10 @@ class GameBoard;
 class Ship
 {
 private:
-    GameBoardCell* _cells;  // клетки корабля
+    GameBoardCell* _cells;
+
+private:
+    // клетки корабля
     ShipState _state;   // состояние корабля
     int _size;
 public:
@@ -28,6 +31,7 @@ public:
 
     // функция возвращает состояние корабля, выполнив проверку целостности всех палуб
     ShipState GetState();
+    GameBoardCell *getCells();
 
     // функция выстрела по кораблю, возвращает состояние корабля, после выстрела
     bool Shoot_ship(GameBoard& gameBoard, int x, int y);
@@ -58,40 +62,43 @@ public:
 
 
     // функция установки статуса клетки игрового поля
-    void SetState(int x, int y, CellState state)
-    { _cells[y][x].SetState(state); }
+    void setState(int x, int y, CellState state)
+    { _cells[y][x].setState(state); }
 
 
 
-    CellState GetState(int x, int y)
+    CellState getState(int x, int y)
     { if (x >= 0 && y >= 0 && x < _size && y < _size)
-            return _cells[y][x].GetState();
+            return _cells[y][x].getState();
         else
             return OutOfBoard;
     }
 
     // функция возвращает, является ли клетка палубой
-    bool IsDeck(int x, int y)
-    { return _cells[y][x].GetState() == Deck || _cells[y][x].GetState() == HitDeck; }
+    bool isDeck(int x, int y)
+    { return _cells[y][x].getState() == Deck || _cells[y][x].getState() == HitDeck; }
 
     // функция печати игрового поля
-    void Print();
-    void PrintBot();
+    void print();
+    void printBot();
 //    void cls(HANDLE hConsole);
     // функция возвращает число клеток игровой области
 
     // функция возвращает размер игровой области
-    int GetSize()
+    int getSize()
     { return _size; }
 
+    // функция возвращает координаты клетки safe корабля
+    GameBoardCell getSafeCell(GameBoard& gameBoard);
+
     // функция - выстрел в игровое поле
-    int Shoot_function(GameBoard& gameBoard,int x, int y);
+    int shootFunction(GameBoard& gameBoard, int x, int y);
 
     // функция проверки - уничтожены ли все корабли на поле
-    bool AllShipsDestroyed();
-    list<int> ShipsDestroyed();
+    bool allShipsDestroyed();
+    list<int> shipsDestroyed();
 
-    static void Remain(list<int>list);
+    static void remain(list<int>list);
 
 };
 

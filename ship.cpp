@@ -30,15 +30,15 @@ bool Ship::Create_ship(int x, int y, int dir, int size_ship, GameBoard& gameBoar
     _x = x;
     _y = y;
     for (int i = 0; i < _size; i++) {
-        if (gameBoard.GetState(_x, _y) == Empty &&
-            gameBoard.GetState(_x, _y + 1) != Deck &&
-            gameBoard.GetState(_x, _y - 1) != Deck &&
-            gameBoard.GetState(_x + 1, _y) != Deck &&
-            gameBoard.GetState(_x + 1, _y + 1) != Deck &&
-            gameBoard.GetState(_x + 1, _y - 1) != Deck &&
-            gameBoard.GetState(_x - 1, _y) != Deck &&
-            gameBoard.GetState(_x - 1, _y + 1) != Deck &&
-            gameBoard.GetState(_x - 1, _y - 1) != Deck)
+        if (gameBoard.getState(_x, _y) == Empty &&
+                gameBoard.getState(_x, _y + 1) != Deck &&
+                gameBoard.getState(_x, _y - 1) != Deck &&
+                gameBoard.getState(_x + 1, _y) != Deck &&
+                gameBoard.getState(_x + 1, _y + 1) != Deck &&
+                gameBoard.getState(_x + 1, _y - 1) != Deck &&
+                gameBoard.getState(_x - 1, _y) != Deck &&
+                gameBoard.getState(_x - 1, _y + 1) != Deck &&
+                gameBoard.getState(_x - 1, _y - 1) != Deck)
         { setting_is_possible = true;
         } else {
             setting_is_possible = false;
@@ -61,9 +61,9 @@ bool Ship::Create_ship(int x, int y, int dir, int size_ship, GameBoard& gameBoar
     }
     if (setting_is_possible) {
         for (int i = 0; i < _size; i++) {
-            _cells[i].SetX(x);
-            _cells[i].SetY(y);
-            gameBoard.SetState(x , y, Deck);
+            _cells[i].setX(x);
+            _cells[i].setY(y);
+            gameBoard.setState(x, y, Deck);
             switch (dir) {
                 case 0:
                     y++;
@@ -88,7 +88,7 @@ bool Ship::Create_ship(int x, int y, int dir, int size_ship, GameBoard& gameBoar
  bool Ship::TryHit(int x, int y)
 {
     for (int i = 0; i < _size; i++)
-        if (_cells[i].TryHit(x, y))
+        if (_cells[i].tryHit(x, y))
             return true;
     return false;
 }
@@ -99,7 +99,7 @@ ShipState Ship::GetState()
     // считаем число попаданий
     int hitCount = 0;
     for (int i = 0; i < _size; i++)
-        if (_cells[i].GetState() == HitDeck)
+        if (_cells[i].getState() == HitDeck)
             hitCount++;
 
     // сверяем число попаданий с числом палуб
@@ -113,13 +113,17 @@ ShipState Ship::GetState()
     return _state;
 }
 
+GameBoardCell *Ship::getCells() {
+    return _cells;
+}
+
 bool Ship::Shoot_ship(GameBoard& gameBoard, int x, int y)
 {
     for (int i = 0; i < _size; i++)
-        if (_cells[i].TryHit(x, y))
+        if (_cells[i].tryHit(x, y))
         {
-            _cells[i].SetState(HitDeck);
-            gameBoard.SetState(x, y, HitDeck);
+            _cells[i].setState(HitDeck);
+            gameBoard.setState(x, y, HitDeck);
 
 
 
@@ -128,33 +132,34 @@ bool Ship::Shoot_ship(GameBoard& gameBoard, int x, int y)
     {
         for (int i = 0; i < _size; i++)
         {
-            int localX = _cells[i].GetX();
-            int localY = _cells[i].GetY();
-            if (localX - 1 >= 0 && localY - 1 >= 0 && !gameBoard.IsDeck(localX - 1, localY - 1))
-                gameBoard.SetState(localX - 1, localY - 1, Miss);
-            if (localX - 1 >= 0 && !gameBoard.IsDeck(localX - 1, localY))
-                gameBoard.SetState(localX - 1, localY, Miss);
-            if (localX - 1 >= 0 && localY + 1 < gameBoard.GetSize() && !gameBoard.IsDeck(localX - 1, localY + 1))
-                gameBoard.SetState(localX - 1, localY + 1, Miss);
+            int localX = _cells[i].getX();
+            int localY = _cells[i].getY();
+            if (localX - 1 >= 0 && localY - 1 >= 0 && !gameBoard.isDeck(localX - 1, localY - 1))
+                gameBoard.setState(localX - 1, localY - 1, Miss);
+            if (localX - 1 >= 0 && !gameBoard.isDeck(localX - 1, localY))
+                gameBoard.setState(localX - 1, localY, Miss);
+            if (localX - 1 >= 0 && localY + 1 < gameBoard.getSize() && !gameBoard.isDeck(localX - 1, localY + 1))
+                gameBoard.setState(localX - 1, localY + 1, Miss);
 
-            if (localY - 1 >= 0 && !gameBoard.IsDeck(localX, localY - 1))
-                gameBoard.SetState(localX, localY - 1, Miss);
-            if (localY + 1 < gameBoard.GetSize() && !gameBoard.IsDeck(localX, localY + 1))
-                gameBoard.SetState(localX, localY + 1, Miss);
+            if (localY - 1 >= 0 && !gameBoard.isDeck(localX, localY - 1))
+                gameBoard.setState(localX, localY - 1, Miss);
+            if (localY + 1 < gameBoard.getSize() && !gameBoard.isDeck(localX, localY + 1))
+                gameBoard.setState(localX, localY + 1, Miss);
 
-            if (localX + 1 < gameBoard.GetSize() && localY - 1 >= 0 && !gameBoard.IsDeck(localX + 1, localY - 1))
-                gameBoard.SetState(localX + 1, localY - 1, Miss);
-            if (localX + 1 < gameBoard.GetSize() && !gameBoard.IsDeck(localX + 1, localY))
-                gameBoard.SetState(localX + 1, localY, Miss);
-            if (localX + 1 < gameBoard.GetSize() && localY + 1 < gameBoard.GetSize() && !gameBoard.IsDeck(localX + 1, localY + 1))
-                gameBoard.SetState(localX + 1, _cells[i].GetY() + 1, Miss);
+            if (localX + 1 < gameBoard.getSize() && localY - 1 >= 0 && !gameBoard.isDeck(localX + 1, localY - 1))
+                gameBoard.setState(localX + 1, localY - 1, Miss);
+            if (localX + 1 < gameBoard.getSize() && !gameBoard.isDeck(localX + 1, localY))
+                gameBoard.setState(localX + 1, localY, Miss);
+            if (localX + 1 < gameBoard.getSize() && localY + 1 < gameBoard.getSize() && !gameBoard.isDeck(localX + 1,
+                                                                                                          localY + 1))
+                gameBoard.setState(localX + 1, _cells[i].getY() + 1, Miss);
         }
         return true;
     }
     return false;
 
 }
-int GameBoard::Shoot_function(GameBoard& gameBoard, int x, int y) {
+int GameBoard::shootFunction(GameBoard& gameBoard, int x, int y) {
     // просмотрим все корабли
     int flag = 0;
     for (int i = 0; i < _shipsCount; i++) {
@@ -170,7 +175,7 @@ int GameBoard::Shoot_function(GameBoard& gameBoard, int x, int y) {
 }
     if (flag == 1) return 1;
     else if (flag == 2) return 3;
-    else if (gameBoard.GetState(x,y) == Empty) { _cells[y][x].SetState(Miss); return 0;}
+    else if (gameBoard.getState(x, y) == Empty) { _cells[y][x].setState(Miss); return 0;}
     else return 2;
 
 
@@ -178,7 +183,7 @@ int GameBoard::Shoot_function(GameBoard& gameBoard, int x, int y) {
 
 }
 
-bool GameBoard::AllShipsDestroyed()
+bool GameBoard::allShipsDestroyed()
 {
     // обход всех кораблей
     for (int i = 0; i < _shipsCount; i++)
@@ -190,7 +195,7 @@ bool GameBoard::AllShipsDestroyed()
     return true;    // иначе true
 }
 
-list<int> GameBoard::ShipsDestroyed()
+list<int> GameBoard::shipsDestroyed()
 {
     list<int> list;
     // обход всех кораблей
@@ -201,6 +206,22 @@ list<int> GameBoard::ShipsDestroyed()
 
         }
     return list;    // иначе true
+}
+
+GameBoardCell GameBoard::getSafeCell(GameBoard& gameBoard) {
+    GameBoardCell cell;
+    bool check = false;
+    for (Ship ship : _ships) {
+        if (ship.GetState() == Safe) {
+            check = true;
+            cell = ship.getCells()[0];
+        }
+    }
+    if (!check) {
+        cell.setX(-1);
+        cell.setY(-1);
+    }
+    return cell;
 }
 
 
@@ -263,6 +284,7 @@ Ship::~Ship()
     if (_size)
         delete _cells;
 }
+
 //void GameBoard::cls(HANDLE hConsole)
 //{
 //    CONSOLE_SCREEN_BUFFER_INFO csbi;
