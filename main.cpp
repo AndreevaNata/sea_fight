@@ -43,7 +43,7 @@ int main() {
 
             cout << "Enter x and y coord: X_Y: " << endl;
             char fx;
-            (new Ship)->Entry(Bot, x, y, letter, -1, 2, -1);
+            (new Ship)->entry(Bot, x, y, letter, -1, 2, -1);
 
             int check = Bot.shootFunction(Bot, x, y);
             if (check == 0){//стреляем в поле бота
@@ -127,7 +127,17 @@ int main() {
                 }
             }
             else {
-                if (countMiss > 4) {
+                int level = 5;
+                if (Player.getLevelOfComplexity() == Easy) {
+                    level = 5;
+                }
+                else if (Player.getLevelOfComplexity() == Middle) {
+                    level = 4;
+                }
+                else if (Player.getLevelOfComplexity() == Hard) {
+                    level = 3;
+                }
+                if (countMiss >= level) {
                     GameBoardCell cell = Player.getSafeCell(Player);
                     if (cell.getX() == -1) {
                         Botx = rand() % N;
@@ -195,7 +205,7 @@ int main() {
                     cout << "Bot entered the coordinates: " << Botx_char<< " " << Boty+1;
 //                    Sleep(1000);
 //                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
-                    cout<<"\n Bot kill your ship\n"<<endl;
+                    cout<<"\nBot kill your ship\n"<<endl;
 //                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
                     for (int j = 0; j < 4; j++){
                         BotMiss[j] = false;
@@ -240,6 +250,24 @@ void GameBoard::Generate() {
     for (int i = 0; i < _size; i++)
         for (int j = 0; j < _size; j++)
             _cells[i][j].setState(Empty);
+    bool lCheck = true;
+    while (lCheck) {
+        lCheck = false;
+        cout << "Choose the complexity level!\n";
+        cout << "Enter EASY, MIDDLE or HARD: ";
+        string level;
+        cin >> level;
+        if (level == "EASY") {
+            levelOfComplexity = Easy;
+        } else if (level == "MIDDLE") {
+            levelOfComplexity = Middle;
+        } else if (level == "HARD") {
+            levelOfComplexity = Hard;
+        } else {
+            cout << "\nError! Please, try again.\n\n";
+            lCheck = true;
+        }
+    }
     int idx = 0;
     cout << "How do you want to set up the ships?" << endl;
     cout << "Enter 0 (on your own) or 1 (random): ";
@@ -254,26 +282,26 @@ void GameBoard::Generate() {
         int i = 0;
         while (i < _4DeckShipCount) {
             cout << "4 deck ship (quantity " << _4DeckShipCount-i << "): ";
-            _ships[idx++].Entry(*this, x, y, letter, pos, 3, 4);
+            _ships[idx++].entry(*this, x, y, letter, pos, 3, 4);
             print();
             cout << endl;
             i++;
         }
         for ( i = 0; i < _3DeckShipCount; i++) {
             cout << "3 deck ship (quantity " << _3DeckShipCount-i << "): ";
-            _ships[idx++].Entry(*this, x, y, letter, pos, 3, 3);
+            _ships[idx++].entry(*this, x, y, letter, pos, 3, 3);
             print();
             cout << endl;
         }
         for (i = 0; i < _2DeckShipCount; i++) {
             cout << "2 deck ship (quantity " << _2DeckShipCount-i << "): ";
-            _ships[idx++].Entry(*this, x, y, letter, pos, 3, 2);
+            _ships[idx++].entry(*this, x, y, letter, pos, 3, 2);
             print();
             cout << endl;
         }
         for ( i = 0; i < _1DeckShipCount; i++) {
             cout << "1 deck ship (quantity " << _1DeckShipCount-i << "): ";
-            _ships[idx++].Entry(*this, x, y, letter, pos, 3, 1);
+            _ships[idx++].entry(*this, x, y, letter, pos, 3, 1);
             print();
             cout << endl;
         }
@@ -285,19 +313,19 @@ void GameBoard::Generate() {
     }
     else {
         // расставляем 4-х палубные
-        _ships[idx++].Create_random(*this, 4);
+        _ships[idx++].createRandom(*this, 4);
         // расставляем 3-х палубные
-        _ships[idx++].Create_random(*this, 3);
-        _ships[idx++].Create_random(*this, 3);
+        _ships[idx++].createRandom(*this, 3);
+        _ships[idx++].createRandom(*this, 3);
         // расставляем 2-х палубные
-        _ships[idx++].Create_random(*this, 2);
-        _ships[idx++].Create_random(*this, 2);
-        _ships[idx++].Create_random(*this, 2);
+        _ships[idx++].createRandom(*this, 2);
+        _ships[idx++].createRandom(*this, 2);
+        _ships[idx++].createRandom(*this, 2);
         // расставляем 1-х палубные
-        _ships[idx++].Create_random(*this, 1);
-        _ships[idx++].Create_random(*this, 1);
-        _ships[idx++].Create_random(*this, 1);
-        _ships[idx++].Create_random(*this, 1);
+        _ships[idx++].createRandom(*this, 1);
+        _ships[idx++].createRandom(*this, 1);
+        _ships[idx++].createRandom(*this, 1);
+        _ships[idx++].createRandom(*this, 1);
     }
 
 }
@@ -309,20 +337,20 @@ void GameBoard::GenerateBot() {
         for (int j = 0; j < _size; j++)
             _cells[i][j].setState(Empty);
     // расставляем 4-х палубные
-    _ships[idx++].Create_random(*this, 4);
+    _ships[idx++].createRandom(*this, 4);
     // расставляем 3-х палубные
-    _ships[idx++].Create_random(*this, 3);
-    _ships[idx++].Create_random(*this, 3);
+    _ships[idx++].createRandom(*this, 3);
+    _ships[idx++].createRandom(*this, 3);
     // расставляем 2-х палубные
-    _ships[idx++].Create_random(*this, 2);
-    _ships[idx++].Create_random(*this, 2);
-    _ships[idx++].Create_random(*this, 2);
+    _ships[idx++].createRandom(*this, 2);
+    _ships[idx++].createRandom(*this, 2);
+    _ships[idx++].createRandom(*this, 2);
 
     // расставляем 1-х палубные
-    _ships[idx++].Create_random(*this, 1);
-    _ships[idx++].Create_random(*this, 1);
-    _ships[idx++].Create_random(*this, 1);
-    _ships[idx++].Create_random(*this, 1);
+    _ships[idx++].createRandom(*this, 1);
+    _ships[idx++].createRandom(*this, 1);
+    _ships[idx++].createRandom(*this, 1);
+    _ships[idx++].createRandom(*this, 1);
 }
 void GameBoard::remain(list<int> list) {
 

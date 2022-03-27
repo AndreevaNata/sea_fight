@@ -21,22 +21,22 @@ public:
         _cells = NULL;
         _size = 0;
     }
-    void Create_random(GameBoard& gameBoard, int size_ship);
+    void createRandom(GameBoard& gameBoard, int size_ship);
 
-    bool Create_ship(int x, int y, int dir, int size_ship, GameBoard& gameBoard);
-    void Entry(GameBoard& gameBoard, int &x, int &y, const string& letter, int pos, int n, int size_ship);
+    bool createShip(int x, int y, int dir, int size_ship, GameBoard& gameBoard);
+    void entry(GameBoard& gameBoard, int &x, int &y, const string& letter, int pos, int n, int size_ship);
 
 
     ~Ship();
 
     // функция возвращает состояние корабля, выполнив проверку целостности всех палуб
-    ShipState GetState();
+    ShipState getState();
     GameBoardCell *getCells();
 
     // функция выстрела по кораблю, возвращает состояние корабля, после выстрела
-    bool Shoot_ship(GameBoard& gameBoard, int x, int y);
+    bool shootShip(GameBoard& gameBoard, int x, int y);
 
-    bool TryHit(int x, int y);
+    bool tryHit(int x, int y);
 };
 
 // класс - игровое поле
@@ -50,6 +50,11 @@ private:
     static const int _shipsCount = _4DeckShipCount + _3DeckShipCount + _2DeckShipCount + _1DeckShipCount;   // число кораблей
     GameBoardCell _cells[_size][_size]; // клетки игрового поля
     Ship _ships[_shipsCount];   // корабли
+    LevelOfComplexity levelOfComplexity;
+public:
+    LevelOfComplexity getLevelOfComplexity() const;
+
+    void setLevelOfComplexity(LevelOfComplexity levelOfComplexity);
 
     // функция создание игрового поля
 

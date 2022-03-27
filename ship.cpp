@@ -3,7 +3,7 @@
 #include <list>
 const int N = 10;
 class GameBoard;
-void Ship::Create_random(GameBoard& gameBoard, int size_ship)
+void Ship::createRandom(GameBoard& gameBoard, int size_ship)
 {
     _size = size_ship;
     // заполняем клетки в зависимости от начала координат корабля и его направления
@@ -16,13 +16,13 @@ void Ship::Create_random(GameBoard& gameBoard, int size_ship)
 
         dir = rand() % 4;
 
-        if (Create_ship(x, y, dir, size_ship, gameBoard)) {
+        if (createShip(x, y, dir, size_ship, gameBoard)) {
             count_ship++;
         }
     }
 }
 
-bool Ship::Create_ship(int x, int y, int dir, int size_ship, GameBoard& gameBoard) {
+bool Ship::createShip(int x, int y, int dir, int size_ship, GameBoard& gameBoard) {
     bool setting_is_possible = true;
     _size = size_ship;
     _cells = new GameBoardCell[_size];
@@ -85,7 +85,7 @@ bool Ship::Create_ship(int x, int y, int dir, int size_ship, GameBoard& gameBoar
         return false;
     }
 }
- bool Ship::TryHit(int x, int y)
+ bool Ship::tryHit(int x, int y)
 {
     for (int i = 0; i < _size; i++)
         if (_cells[i].tryHit(x, y))
@@ -94,7 +94,7 @@ bool Ship::Create_ship(int x, int y, int dir, int size_ship, GameBoard& gameBoar
 }
 
 
-ShipState Ship::GetState()
+ShipState Ship::getState()
 {
     // считаем число попаданий
     int hitCount = 0;
@@ -117,7 +117,7 @@ GameBoardCell *Ship::getCells() {
     return _cells;
 }
 
-bool Ship::Shoot_ship(GameBoard& gameBoard, int x, int y)
+bool Ship::shootShip(GameBoard& gameBoard, int x, int y)
 {
     for (int i = 0; i < _size; i++)
         if (_cells[i].tryHit(x, y))
@@ -128,7 +128,7 @@ bool Ship::Shoot_ship(GameBoard& gameBoard, int x, int y)
 
 
         }
-    if (GetState() == Destroyed)
+    if (getState() == Destroyed)
     {
         for (int i = 0; i < _size; i++)
         {
@@ -164,9 +164,9 @@ int GameBoard::shootFunction(GameBoard& gameBoard, int x, int y) {
     int flag = 0;
     for (int i = 0; i < _shipsCount; i++) {
         // проверим попадание
-        if (_ships[i].TryHit(x, y)) {
+        if (_ships[i].tryHit(x, y)) {
             // если попадаем - стреляем по кораблю
-            if(!_ships[i].Shoot_ship(*this, x, y))
+            if(!_ships[i].shootShip(*this, x, y))
                 flag = 1;
             else flag = 2;
             break;
@@ -188,7 +188,7 @@ bool GameBoard::allShipsDestroyed()
     // обход всех кораблей
     for (int i = 0; i < _shipsCount; i++)
         // если хотя бы один не уничтожен, вернем false
-        if (_ships[i].GetState() != Destroyed) {
+        if (_ships[i].getState() != Destroyed) {
 
             return false;
         }
@@ -201,7 +201,7 @@ list<int> GameBoard::shipsDestroyed()
     // обход всех кораблей
     for (int i = 0; i < _shipsCount; i++)
         // если хотя бы один не уничтожен, вернем false
-        if (_ships[i].GetState() != Destroyed) {
+        if (_ships[i].getState() != Destroyed) {
             list.push_back(i);
 
         }
@@ -212,7 +212,7 @@ GameBoardCell GameBoard::getSafeCell(GameBoard& gameBoard) {
     GameBoardCell cell;
     bool check = false;
     for (Ship ship : _ships) {
-        if (ship.GetState() == Safe) {
+        if (ship.getState() == Safe) {
             check = true;
             cell = ship.getCells()[0];
         }
@@ -224,10 +224,16 @@ GameBoardCell GameBoard::getSafeCell(GameBoard& gameBoard) {
     return cell;
 }
 
+LevelOfComplexity GameBoard::getLevelOfComplexity() const {
+    return levelOfComplexity;
+}
+
+void GameBoard::setLevelOfComplexity(LevelOfComplexity levelOfComplexity) {
+    GameBoard::levelOfComplexity = levelOfComplexity;
+}
 
 
-
-void Ship::Entry(GameBoard& gameBoard, int &x, int &y, const string& letter, int pos, int n, int size_ship) {
+void Ship::entry(GameBoard& gameBoard, int &x, int &y, const string& letter, int pos, int n, int size_ship) {
     _size = size_ship;
     char fx;
     bool run = true;
@@ -268,7 +274,7 @@ void Ship::Entry(GameBoard& gameBoard, int &x, int &y, const string& letter, int
 
         --y;
         if (n==3) {
-            if(!(Create_ship(x,y,pos,size_ship,gameBoard))) {
+            if(!(createShip(x, y, pos, size_ship, gameBoard))) {
                 cout << letter; run = true;
             }
         }
