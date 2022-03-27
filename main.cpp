@@ -43,7 +43,7 @@ int main() {
         level = 4;
     }
     else if (Player.getLevelOfComplexity() == Hard) {
-        level = 1;
+        level = 3;
     }
     do {
         if (step) {
